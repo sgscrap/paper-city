@@ -22,7 +22,7 @@
  *
  * Requires: gh CLI authenticated (gh auth status), clean-enough git tree.
  */
-import { execSync, spawn } from 'node:child_process';
+import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -131,7 +131,12 @@ if (!fs.existsSync(INSTALLER)) {
     process.stdout.write(`  Installer ready: ${path.basename(INSTALLER)}\n`);
 }
 
-// --- 4. Smoke test ---
+// --- 4. Social preview banner ---
+step(`Render social preview banner (v${VERSION})`);
+run(`node scripts/social-preview.mjs ${VERSION}`, { quiet: true });
+process.stdout.write(`  banner refreshed: docs/social-banner.png\n`);
+
+// --- 5. Smoke test ---
 if (skipSmoke) {
     step('Skipping smoke test (--skip-smoke)');
 } else {
@@ -139,7 +144,7 @@ if (skipSmoke) {
     run('npm run desktop:smoke', { readOnly: true });
 }
 
-// --- 5. Commit, tag, push ---
+// --- 6. Commit, tag, push ---
 step('Commit release changes');
 run(`git add -A .`);
 const commitMsg = `Release ${TAG}\\n\\nVersion bump and release artifacts for Update ${VERSION}.\\n\\n🤖 Generated with Codebuff\\nCo-Authored-By: Codebuff <noreply@codebuff.com>`;
@@ -152,7 +157,7 @@ step('Push master + tag');
 run('git push origin master');
 run(`git push origin ${TAG}`);
 
-// --- 6. GitHub release ---
+// --- 7. GitHub release ---
 step('Publish GitHub release');
 const notesArgs = notesFile ? ` --notes-file "${path.resolve(projectRoot, notesFile)}"` : ' --generate-notes';
 run(`gh release create ${TAG} "${INSTALLER}" --title "Update ${VERSION}"${notesArgs}`);

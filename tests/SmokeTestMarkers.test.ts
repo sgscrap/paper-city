@@ -44,4 +44,14 @@ describe('smoke test marker sync', () => {
     it('no legacy noise.png reference remains in ScreenEffects', () => {
         expect(screenEffects).not.toContain('noise.png');
     });
+
+    it('social banner template exposes the __VERSION__ placeholder', () => {
+        const banner = fs.readFileSync(path.join(projectRoot, 'docs', 'social-banner.html'), 'utf8');
+        expect(banner).toContain('__VERSION__');
+    });
+
+    it('release pipeline renders the social preview before publishing', () => {
+        const release = fs.readFileSync(path.join(projectRoot, 'scripts', 'release.mjs'), 'utf8');
+        expect(release).toContain('scripts/social-preview.mjs');
+    });
 });
