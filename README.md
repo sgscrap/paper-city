@@ -20,6 +20,14 @@ The main menu displays a **build stamp** (`build v0.1.2`) sourced directly from 
 
 The script kills stale `Paper City.exe` instances first, always cleans up the spawned app, and exits non-zero if any check fails — suitable for CI. A companion unit test (`tests/SmokeTestMarkers.test.ts`) keeps the smoke-test markers in sync with the actual NPC data and components, so data edits cannot silently break the smoke check.
 
+### One-command release
+
+```bash
+npm run desktop:release -- 0.1.3 docs/PATCH_NOTES_0.1.3.md
+```
+
+Bumps `package.json`, runs typecheck + lint + unit tests, builds, packages the NSIS installer, smoke-tests the packaged exe, then commits, tags `vX.Y.Z`, pushes, and publishes the GitHub release with the installer attached. Flags: `--dry-run` (fully inert except the read-only smoke test) and `--skip-smoke`. Requires an authenticated `gh` CLI.
+
 ## Current game systems
 
 ### Faction identity
