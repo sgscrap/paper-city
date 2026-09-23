@@ -35,6 +35,19 @@ The main menu displays a **build stamp** (`build v0.1.2`) sourced directly from 
 
 The script kills stale `Paper City.exe` instances first, always cleans up the spawned app, and exits non-zero if any check fails — suitable for CI. A companion unit test (`tests/SmokeTestMarkers.test.ts`) keeps the smoke-test markers in sync with the actual NPC data and components, so data edits cannot silently break the smoke check.
 
+### Asset & content authoring procedure
+
+All generated content (buildings, maps, NPCs, items, encounters, events) ships through the four gates in **`docs/ASSET_PROCEDURE.md`**: Define → Place → Wire → Verify.
+
+The mechanical rules are enforced by the validator:
+
+```bash
+npm run assets:check            # human report
+npm run assets:check -- --json  # machine report (CI)
+```
+
+It verifies ID conventions (`npc_*`, key === id), reference integrity (venues, schedules, factions, stats), map geometry (bounds, overlaps, spawn safety), action routing, daypart dialogue pools, and encounter/event wiring. Errors fail the build; warnings flag procedure gaps (e.g. missing daypart pools). The release pipeline runs it automatically alongside tests.
+
 ### One-command release
 
 ```bash

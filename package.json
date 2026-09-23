@@ -17,6 +17,7 @@
     "desktop:package": "npm run desktop:installer",
     "desktop:smoke": "node scripts/smoke-test.mjs",
     "social:preview": "node scripts/social-preview.mjs",
+    "assets:check": "node scripts/validate-assets.mjs",
     "desktop:release": "node scripts/release.mjs",
     "lint": "eslint .",
     "server": "ts-node src/server/socket.ts",

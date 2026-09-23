@@ -110,6 +110,9 @@ run('npm run lint', { quiet: true });
 step('Unit tests');
 run('npx vitest run', { quiet: true });
 
+step('Asset validation');
+run('npm run assets:check', { quiet: true });
+
 // --- 3. Build & package ---
 step('Production build');
 run('npm run build');
