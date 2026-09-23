@@ -1,0 +1,101 @@
+{
+  "name": "paper-city",
+  "version": "0.1.2",
+  "description": "Paper City — a systems-driven urban RPG about identity, influence, and survival.",
+  "author": "Paper City RPG",
+  "private": true,
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "desktop": "electron .",
+    "desktop:dev": "electron .",
+    "desktop:prod": "npm run build && electron . --production",
+    "desktop:unpacked": "npm run build && electron-builder --dir",
+    "desktop:installer": "npm run build && electron-builder --win nsis",
+    "desktop:package": "npm run desktop:installer",
+    "desktop:smoke": "node scripts/smoke-test.mjs",
+    "lint": "eslint .",
+    "server": "ts-node src/server/socket.ts",
+    "opencode": "opencode .",
+    "opencode:web": "opencode web"
+  },
+  "dependencies": {
+    "@types/uuid": "^10.0.0",
+    "clsx": "^2.1.1",
+    "next": "16.1.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.4.0",
+    "uuid": "^13.0.0",
+    "ws": "^8.19.0",
+    "zustand": "^5.0.10"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "autoprefixer": "^10.4.23",
+    "electron": "^44.4.3",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.2",
+    "jsdom": "^27.4.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5",
+    "vitest": "^4.0.17"
+  },
+  "build": {
+    "appId": "com.papercity.rpg",
+    "productName": "Paper City",
+    "artifactName": "Paper-City-Setup-${version}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json",
+      "!node_modules/.cache/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone",
+        "to": "paper-city-server"
+      },
+      {
+        "from": ".next/static",
+        "to": "paper-city-server/.next/static"
+      },
+      {
+        "from": "public",
+        "to": "paper-city-server/public"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/app/favicon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Paper City",
+      "menuCategory": "Paper City RPG",
+      "runAfterFinish": true
+    }
+  }
+}
