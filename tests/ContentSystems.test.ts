@@ -18,7 +18,20 @@ const resetStores = () => {
     useUIStore.setState({
         uiMode: 'boot', bootOpacity: 1, liveOpacity: 0, activeTab: 'location', toasts: [], shake: false, activeDialogue: null
     });
-    useGameStore.setState({ ...INITIAL_STATE, combatState: null, outfit: 'street_clothes', remotePlayers: {}, pricePollingId: null });
+    // Deep-clone: a shallow spread shares every nested object with INITIAL_STATE,
+    // so any in-place mutation in game code corrupts the constant for later tests
+    // (manifested as cross-test worth drift like 20 -> 40 -> 0).
+    useGameStore.setState({
+        ...structuredClone(INITIAL_STATE),
+        combatState: null,
+        outfit: 'street_clothes',
+        remotePlayers: {},
+        pricePollingId: null,
+        // Pin random events off by default: advanceTime rolls a 7% event chance
+        // whose cash effects pollute assertions. Tests that exercise the event
+        // engine re-enable it explicitly.
+        randomEvents: { ...structuredClone(INITIAL_STATE.randomEvents), triggeredToday: 99 }
+    });
 };
 
 describe('Content systems', () => {
@@ -116,7 +129,9 @@ describe('Content systems', () => {
 
     it('reacts to combat context by allowing strong social or economic leverage to avoid violence', () => {
         vi.spyOn(Math, 'random').mockReturnValue(0);
+        // This test exercises the event engine itself — re-enable rolls pinned off in resetStores.
         useGameStore.setState({
+            randomEvents: { ...INITIAL_STATE.randomEvents, triggeredToday: 0 },
             player: { ...INITIAL_STATE.player, stats: { ...INITIAL_STATE.player.stats, charisma: 14 }, energy: 100 }
         });
 
@@ -129,7 +144,9 @@ describe('Content systems', () => {
 
     it('filters contextual events by venue and time of day', () => {
         vi.spyOn(Math, 'random').mockReturnValue(0);
+        // This test exercises the event engine itself — re-enable rolls pinned off in resetStores.
         useGameStore.setState({
+            randomEvents: { ...INITIAL_STATE.randomEvents, triggeredToday: 0 },
             world: { ...INITIAL_STATE.world, locationId: 'trading_floor', time: 600 },
             player: { ...INITIAL_STATE.player, stats: { ...INITIAL_STATE.player.stats, worth: 100 } }
         });
@@ -535,6 +552,9 @@ describe('Content systems', () => {
             player: { ...INITIAL_STATE.player, energy: 100 }
         });
         useGameStore.setState({ world: { ...useGameStore.getState().world, day: 3 } });
+        // advanceTime inside the activity rolls random events; pin them off so the
+        // cash assertion measures only the activity's own cost (same guard as above).
+        useGameStore.setState({ randomEvents: { ...INITIAL_STATE.randomEvents, triggeredToday: 99 } });
         const activities = useGameStore.getState();
         // Day 3 % 3 === 0 bucket includes Corner Breakfast Run.
         const breakfast = getDailyActivities(useGameStore.getState()).find((activity) => activity.id === 'activity_block_breakfast');
