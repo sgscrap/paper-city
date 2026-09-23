@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { VisualMap } from '@/components/views/VisualMap';
+import { CityMapView } from '@/components/views/CityMapView';
 import { InventoryView } from '@/components/views/InventoryView';
 import { ShopView } from '@/components/views/ShopView';
 import { NPCList } from '@/components/views/NPCList';
@@ -164,6 +165,7 @@ export default function GamePage() {
               gameMode === null ? <ModeSelector /> : <CharacterCreator />
             ) : (
               <>
+                {activeTab === 'citymap' && <CityMapView onBack={() => setActiveTab('location')} />}
                 {activeTab === 'location' && (
                   <VisualMap
                     key={locationId}

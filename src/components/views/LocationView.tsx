@@ -49,6 +49,12 @@ export const LocationView = () => {
                         &quot;{currentLocation.description}&quot;
                     </p>
                 </div>
+                <button
+                    onClick={() => useUIStore.getState().setActiveTab('citymap')}
+                    className="mb-6 border border-neon-blue/60 text-neon-blue px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-neon-blue/10 transition-colors"
+                >
+                    Open City Map
+                </button>
             </div>
 
             {/* Actions / Interactive Layer */}

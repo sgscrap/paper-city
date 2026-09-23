@@ -17,7 +17,7 @@ interface UIState {
     uiMode: 'boot' | 'transition' | 'live';
     bootOpacity: number;
     liveOpacity: number;
-    activeTab: 'location' | 'inventory' | 'shop' | 'university' | 'casino' | 'gym' | 'jobs' | 'trading' | 'safehouse' | 'club' | 'combat' | 'economy' | 'leaderboard' | 'achievements';
+    activeTab: 'location' | 'citymap' | 'inventory' | 'shop' | 'university' | 'casino' | 'gym' | 'jobs' | 'trading' | 'safehouse' | 'club' | 'combat' | 'economy' | 'leaderboard' | 'achievements';
     toasts: ToastItem[];
     shake: boolean;
     activeDialogue: {
@@ -29,7 +29,7 @@ interface UIState {
     // Actions
     setUiMode: (mode: 'boot' | 'transition' | 'live') => void;
     startSession: () => void;
-    setActiveTab: (tab: 'location' | 'inventory' | 'shop' | 'university' | 'casino' | 'gym' | 'jobs' | 'trading' | 'safehouse' | 'club' | 'combat' | 'economy' | 'leaderboard' | 'achievements') => void;
+    setActiveTab: (tab: 'location' | 'citymap' | 'inventory' | 'shop' | 'university' | 'casino' | 'gym' | 'jobs' | 'trading' | 'safehouse' | 'club' | 'combat' | 'economy' | 'leaderboard' | 'achievements') => void;
 
     // Dialogue System
     openDialogue: (npcId: string, text: string | string[], type: 'chat' | 'gift' | 'insult') => void;
