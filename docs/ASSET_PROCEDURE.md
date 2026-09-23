@@ -65,7 +65,7 @@ Every new item MUST:
 
 1. **Match the `Item` type** — `id`, `name`, `type` (one of the six enums), `description`, `cost`.
 2. **Cost ≥ 1** unless it is deliberately a gift-only trinket (document why in the description).
-3. **Effects reference real stats**: `will`, `power`, `intelligence`, `charisma`, `luck`, `karma`, `worth`, `energy`, `health`. Anything else will silently no-op.
+3. **Effects reference real stats**: `will`, `power`, `intelligence`, `charisma`, `luck`, `worth`, `energy`, `health`. Anything else will silently no-op. **Karma is special**: in *items*, declare it via `effects` like any stat; in *catalog actions*, declare it via `rewards.karma` — `dispatchAction` routes it through `modifyKarma` (clamped ±100). Before the fix, action karma was silently dropped, so never assume old content's karma fields did anything.
 4. **Weapons include `weaponStats`** (`damage`, `accuracy` 0–100, `critChance` 0–100).
 5. **Gift-eligible items** (usable via NPC *Offer Favor*) must appear in `GIFT_ITEM_IDS` priority order in `src/lib/NPCSystem.ts` — gifts are consumed and logged, so a gift item without effect lines should still make narrative sense.
 6. **Shop placement**: `shopDistrict` values must be real venue ids.

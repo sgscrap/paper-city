@@ -358,6 +358,24 @@ describe('Content systems', () => {
         expect(useGameStore.getState().canAccess('service:trading_floor')).toBe(true);
     });
 
+    it('applies catalog action karma rewards to the player (no-op regression)', () => {
+        // dispatchAction used to drop rewards.karma entirely — moral standing
+        // declared by an action silently did nothing.
+        useGameStore.setState({
+            player: {
+                ...INITIAL_STATE.player,
+                energy: 100,
+                stats: { ...INITIAL_STATE.player.stats, charisma: 20 }
+            }
+        });
+        const before = useGameStore.getState().player.stats.karma;
+        useGameStore.getState().dispatchAction('FOUNDRY_COUNCIL_CHECK');
+        const after = useGameStore.getState();
+        expect(after.player.stats.karma).toBe(before + 1);
+        // The action still paid its stat reward alongside the karma.
+        expect(after.player.stats.charisma).toBe(21);
+    });
+
     it('changes district content pools when a faction is unlocked', () => {
         const state = useGameStore.getState();
         expect(canAccessCareer(state, CAREERS.data_entry_intern)).toBe(false);

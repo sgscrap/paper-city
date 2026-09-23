@@ -177,6 +177,7 @@ export const ACTIONS: Record<string, ActionDefinition> = {
         },
         rewards: {
             xp: 18,
+            karma: 1,
             stats: { charisma: 1 }
         }
     },
@@ -229,6 +230,7 @@ export const ACTIONS: Record<string, ActionDefinition> = {
         },
         rewards: {
             xp: 18,
+            karma: 1,
             stats: { charisma: 1 }
         }
     }

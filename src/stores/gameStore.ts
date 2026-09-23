@@ -735,10 +735,13 @@ export const useGameStore = create<GameStore>()(
 
                     // 2. Apply Rewards
                     if (result.rewards) {
-                        const { money, xp, energy, stats } = result.rewards;
+                        const { money, xp, energy, stats, karma } = result.rewards;
 
                         if (money) actions.modifyStat('worth', money);
                         if (xp) actions.gainXp(xp);
+                        // Karma routes through modifyKarma (clamped by KarmaSystem),
+                        // not modifyStat — actions can now shift moral standing directly.
+                        if (karma) actions.modifyKarma(karma);
 
                         if (energy) {
                             set(s => ({

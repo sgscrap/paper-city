@@ -9,6 +9,7 @@ export interface ActionResult {
         xp?: number;
         stats?: Partial<Stats>;
         energy?: number;
+        karma?: number;
     };
     cost?: {
         time?: number;
