@@ -125,6 +125,19 @@ export const FACTION_VENDORS: FactionVendor[] = [
             { itemId: 'counterfeit_ledger', price: 45 },
             { itemId: 'weighted_knuckles', price: 45 }
         ]
+    },
+    {
+        id: 'vendor_dockmaster_house',
+        name: 'Dockmaster House',
+        location: 'the_waterfront',
+        faction: 'angel',
+        requiredReputation: 0, // Neutral surplus: open to every faction by design.
+        description: 'Lost cargo, sold honestly, priced flat. The harbor keeps no favorites.',
+        stock: [
+            { itemId: 'harbor_seal', price: 45 },
+            { itemId: 'redrafted_manifest', price: 45 },
+            { itemId: 'crane_hook', price: 45 }
+        ]
     }
 ];
 

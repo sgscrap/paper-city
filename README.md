@@ -60,13 +60,27 @@ Bumps `package.json`, runs typecheck + lint + unit tests, builds, packages the N
 
 ### Districts
 
-The city map now spans seven districts. **Foundry Row** (`foundry_row`) is the newest — a decommissioned printworks strip between The Block and the Transit Hub, and the city's neutral ground:
+The city map now spans eight districts. The two newest share the neutral-ground design template and its parity guarantees:
+
+### Foundry Row (`foundry_row`)
+
+A decommissioned printworks strip between The Block and the Transit Hub, and the city's neutral ground:
 
 - **All-Factions Counter** — one vendor (via the Economy view) stocking the parity set: `pressed_crest` (Angel, charisma +2), `counterfeit_ledger` (Ghost, intelligence +2), `weighted_knuckles` (Demon, damage-7 weapon) — all at the same 45-credit price, reputation 8 required.
 - **Three faction work venues** — Foundry Press (Angel, `FOUNDRY_PRESS_WORK`), Scrap & Sort (Ghost, `FOUNDRY_SCRAP_SORT`), and Council Hall (social influence, `FOUNDRY_COUNCIL_CHECK`) — same energy/time band, faction-flavored payouts.
 - **Three scheduled residents** — Grip (Angel), Needle (Ghost, mornings on The Block), Slide (Demon) — with full daypart dialogue, gated services that travel with them, and ending-flag special services.
 - **Daily contracts** — one per faction in the rotating pool (Foundry Press Run, Scrap Audit, Block Eight Collection), plus the Block 8 fight venue.
 - Authored end-to-end through `docs/ASSET_PROCEDURE.md` gates; enforced by `tests/FoundryRow.test.ts` and `npm run assets:check`.
+
+### The Waterfront (`the_waterfront`)
+
+Container cranes and customs seals southeast of The Block — everything the city consumes arrives here, and everything it hides leaves the same way:
+
+- **Dockmaster House** — neutral harbor surplus with the Waterfront parity set: `harbor_seal` (Angel, charisma +2), `redrafted_manifest` (Ghost, intelligence +2), `crane_hook` (Demon, damage-7 weapon) — all at 45 credits, open to every faction.
+- **Three faction work venues** — Manifest Office (Angel, `DOCK_MANIFEST_AUDIT`), Stevedore Shed (Ghost, `DOCK_CONTAINER_SORT`), Customs House (social, `CUSTOMS_HOUSE_REVIEW`) — same energy/time band as Foundry Row's.
+- **Three scheduled residents** — Halyard (Angel), Condor (Ghost, mornings on The Block), Harrow (Demon) — full daypart dialogue, gated services, ending-flag special services.
+- **Daily contracts** — Manifest Run, Container Grade, and the Pier 31 fight venue (with its `dock_skulk` bouncer).
+- Enforced by `tests/Waterfront.test.ts`, including a city-wide rule that every `fight` building target resolves to a real enemy.
 
 ### Faction identity
 

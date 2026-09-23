@@ -17,11 +17,14 @@ const resetStores = () => {
     });
 
     useGameStore.setState({
-        ...INITIAL_STATE,
+        ...structuredClone(INITIAL_STATE),
         combatState: null,
         outfit: 'street_clothes',
         remotePlayers: {},
-        pricePollingId: null
+        pricePollingId: null,
+        // Pin random events off by default (7% advanceTime roll pollutes cash
+        // assertions); event-engine tests re-enable rolls explicitly.
+        randomEvents: { ...structuredClone(INITIAL_STATE.randomEvents), triggeredToday: 99 }
     });
 };
 

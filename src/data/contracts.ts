@@ -74,6 +74,37 @@ const CONTRACTS: Omit<ContractOffer, 'expiresDay'>[] = [
         reward: { cash: 80, xp: 32, reputation: 4 }
     },
     {
+        id: 'waterfront_manifest_run',
+        title: 'Manifest Run',
+        description: 'Audit a full arrival window at the Waterfront manifests office.',
+        faction: 'angel',
+        sourceNpcId: 'npc_dock_halyard',
+        kind: 'work',
+        objective: { trigger: 'action_complete', target: 'DOCK_MANIFEST_AUDIT' },
+        reward: { cash: 85, xp: 30, reputation: 4 }
+    },
+    {
+        id: 'waterfront_container_grade',
+        title: 'Container Grade',
+        description: 'Grade a mixed lot at the stevedore shed and log it without questions.',
+        faction: 'ghost',
+        sourceNpcId: 'npc_dock_condor',
+        kind: 'economy',
+        objective: { trigger: 'action_complete', target: 'DOCK_CONTAINER_SORT' },
+        reward: { cash: 80, xp: 32, reputation: 4 }
+    },
+    {
+        id: 'waterfront_pier_31',
+        title: 'Pier 31 Escort',
+        description: 'Harrow needs the pier cleared before the night rate starts.',
+        faction: 'demon',
+        sourceNpcId: 'npc_dock_harrow',
+        kind: 'combat',
+        objective: { trigger: 'combat_result', target: 'win' },
+        combatEncounterId: 'challenge_demon_pit',
+        reward: { cash: 120, xp: 45, reputation: 5 }
+    },
+    {
         id: 'foundry_block_eight',
         title: 'Block Eight Collection',
         description: 'Slide wants the Block 8 rent collected. One way or another.',

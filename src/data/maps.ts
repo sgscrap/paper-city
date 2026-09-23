@@ -43,7 +43,8 @@ export const MAP_DEFINITIONS: Record<string, MapDef> = {
             // Exits
             { x: 350, y: 0, w: 100, h: 20, label: 'TO DT B-MORE', type: 'exit', action: 'travel', target: 'dt_bmore' },
             { x: 350, y: 580, w: 100, h: 20, label: 'TO SLUMS', type: 'exit', action: 'travel', target: 'underground_markets' },
-            { x: 660, y: 460, w: 120, h: 24, label: 'TO FOUNDRY ROW', type: 'exit', action: 'travel', target: 'foundry_row' }
+            { x: 660, y: 460, w: 120, h: 24, label: 'TO FOUNDRY ROW', type: 'exit', action: 'travel', target: 'foundry_row' },
+            { x: 60, y: 500, w: 120, h: 24, label: 'TO WATERFRONT', type: 'exit', action: 'travel', target: 'the_waterfront' }
         ]
     },
     'underground_markets': {
@@ -113,6 +114,25 @@ export const MAP_DEFINITIONS: Record<string, MapDef> = {
             // Exits (bidirectional: the_block already exits here)
             { x: 350, y: 0, w: 100, h: 20, label: 'TO THE BLOCK', type: 'exit', action: 'travel', target: 'the_block' },
             { x: 350, y: 580, w: 100, h: 20, label: 'TO TRANSIT', type: 'exit', action: 'travel', target: 'transit_hub' }
+        ]
+    },
+    'the_waterfront': {
+        id: 'the_waterfront',
+        width: 800,
+        height: 600,
+        spawn: { x: 400, y: 452 },
+        buildings: [
+            // Interactive venues
+            { x: 40, y: 40, w: 190, h: 140, label: 'MANIFEST OFFICE', type: 'building', action: 'open_dock_manifests' },
+            { x: 290, y: 40, w: 200, h: 140, label: 'STEVEDORE SHED', type: 'building', action: 'open_dock_sort' },
+            { x: 600, y: 40, w: 160, h: 140, label: 'PIER 31', type: 'building', action: 'fight', target: 'dock_skulk' },
+            { x: 40, y: 260, w: 160, h: 120, label: 'CUSTOMS HOUSE', type: 'building', action: 'open_customs_house' },
+            { x: 590, y: 260, w: 160, h: 120, label: 'DOCKMASTER HOUSE', type: 'building', action: 'open_economy' },
+            // Decorations
+            { x: 250, y: 240, w: 90, h: 100, label: 'CRANE 4', type: 'decoration' },
+            { x: 460, y: 240, w: 90, h: 100, label: 'CONTAINER STACK', type: 'decoration' },
+            // Exit (bidirectional: the_block exits back here)
+            { x: 350, y: 0, w: 100, h: 20, label: 'TO THE BLOCK', type: 'exit', action: 'travel', target: 'the_block' }
         ]
     }
 };

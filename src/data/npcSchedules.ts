@@ -91,6 +91,21 @@ export const NPC_SCHEDULES: Record<string, NPCScheduleBlock[]> = {
     npc_foundry_slide: [
         // Sleeps in Block 8, sweeps the Row from 6 AM, opens the pit when the council lights go amber.
         { from: 360, to: 1440, location: 'foundry_row' }
+    ],
+
+    // --- THE WATERFRONT ---
+    npc_dock_halyard: [
+        // Lives at the docks: morning tally at the piers, evening watch change at the Customs House, night re-seals.
+        { from: 360, to: 1440, location: 'the_waterfront' }
+    ],
+    npc_dock_condor: [
+        // Reads the morning manifests while The Block wakes, then works the Manifest Office.
+        { from: 420, to: 720, location: 'the_block' },
+        { from: 720, to: 1440, location: 'the_waterfront' }
+    ],
+    npc_dock_harrow: [
+        // Sleeps at Pier 31, sweeps from 6 AM, runs the night rate after dark.
+        { from: 360, to: 1440, location: 'the_waterfront' }
     ]
 };
 

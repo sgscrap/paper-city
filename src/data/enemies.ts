@@ -80,5 +80,39 @@ export const ENEMIES: Record<string, EnemyDef> = {
             "MAKE IT STOP!",
             "FLESH IS WEAK!"
         ]
+    },
+    'foundry_skulk': {
+        id: 'foundry_skulk',
+        name: 'Foundry Skulk',
+        level: 3,
+        hp: 45,
+        maxHp: 45,
+        power: 8,
+        defense: 2,
+        xpReward: 35,
+        cashReward: 40,
+        drops: [],
+        taunts: [
+            "Block 8 collects. You're the collection.",
+            "Rent's due, friend.",
+            "Should've kept walking."
+        ]
+    },
+    'dock_skulk': {
+        id: 'dock_skulk',
+        name: 'Dock Skulk',
+        level: 4,
+        hp: 60,
+        maxHp: 60,
+        power: 10,
+        defense: 3,
+        xpReward: 50,
+        cashReward: 55,
+        drops: [],
+        taunts: [
+            "Manifests say you don't exist. Convenient.",
+            "Piers close at dark. You won't.",
+            "Longshore tax. Pay it."
+        ]
     }
 };

@@ -662,5 +662,109 @@ export const NPCS: Record<string, NPC> = {
         serviceFaction: 'demon',
         specialService: 'Pit-weight certification',
         specialServiceFlags: ['demon_ending_enforcer', 'demon_ending_monster']
+    },
+
+    // --- THE WATERFRONT ---
+    npc_dock_halyard: {
+        id: 'npc_dock_halyard',
+        name: 'Halyard',
+        location: 'the_waterfront',
+        faction: 'angel',
+        alignment: 'good',
+        socialEffects: { chat: { karma: 1, luck: 1, relationship: 2 }, gift: { karma: 1, relationship: 8, trust: 1 }, insult: { karma: -2, fear: 2, relationship: -10 } },
+        baseDialogue: [
+            "A seal is a promise stamped in lead. I count every one twice.",
+            "The docks run on trust and chain-link. Chain-link is the cheap part."
+        ],
+        daypartDialogue: {
+            morning: [
+                "First lighterage is in. Best time to walk the piers before the crowd learns the schedule.",
+                "Morning tally. Everything that arrived overnight gets a seal or a story."
+            ],
+            afternoon: [
+                "Afternoon crane runs are the loud hours. Shout, don't whisper.",
+                "Two containers short of an honest manifest. Story of the Waterfront."
+            ],
+            evening: [
+                "Evening watch changes at the Customs House. Good time to be seen doing right.",
+                "Sunset tally. What the cranes moved today, the city eats tomorrow."
+            ],
+            night: [
+                "Night tides bring cargo nobody stamped. Walk with somebody.",
+                "I re-seal the uncertain containers before midnight. Sleep is for audited men."
+            ]
+        },
+        service: 'contracts',
+        serviceFaction: 'angel',
+        specialService: 'Customs bond waiver',
+        specialServiceFlags: ['angel_ending_steward', 'angel_ending_authority']
+    },
+    npc_dock_condor: {
+        id: 'npc_dock_condor',
+        name: 'Condor',
+        location: 'the_waterfront',
+        faction: 'ghost',
+        alignment: 'opportunistic',
+        socialEffects: { chat: { relationship: 2, trust: 1 }, gift: { relationship: 9, trust: 2 }, insult: { karma: -1, fear: 3, relationship: -12 } },
+        baseDialogue: [
+            "Every container carries two cargoes: the one that's billed and the one that's true. I read both.",
+            "Serial numbers, seal scars, crane schedules. The harbor files itself; I hold the key."
+        ],
+        daypartDialogue: {
+            morning: [
+                "Morning drafts are clean. Nobody's had time to lie in writing yet.",
+                "Fresh manifests at dawn. Want to know what the city's really out of? Look at what's delayed."
+            ],
+            afternoon: [
+                "Afternoon corrections. Every error is a favor someone forgot to invoice.",
+                "Brokers price rumors. I sell the corrections before the rumors exist."
+            ],
+            evening: [
+                "Evening cargo gets rerouted on paper first, cranes second. Read the paper.",
+                "The ghosts of this dock aren't dead men. They're unsigned delivery orders."
+            ],
+            night: [
+                "Night window: manifests move before the ink dries. Nothing here sleeps, it just files late.",
+                "Piers go dark; the ledgers don't. Ask me what vanished tonight."
+            ]
+        },
+        service: 'market',
+        serviceFaction: 'ghost',
+        specialService: 'Manifest foreword',
+        specialServiceFlags: ['ghost_ending_channel', 'ghost_ending_broker']
+    },
+    npc_dock_harrow: {
+        id: 'npc_dock_harrow',
+        name: 'Harrow',
+        location: 'the_waterfront',
+        faction: 'demon',
+        alignment: 'dangerous',
+        socialEffects: { chat: { karma: -1, fear: 2, relationship: 1 }, gift: { relationship: 7, trust: 2 }, insult: { karma: -2, fear: 6, relationship: -14 } },
+        baseDialogue: [
+            "Pier 31 has no daylight rate. You pay what the night decides.",
+            "The longshore crews don't cross my shadow. Neither should you."
+        ],
+        daypartDialogue: {
+            morning: [
+                "Morning count: three quiet nights, two quiet mouths. Good arithmetic.",
+                "Sunrise sweep. Anything that washed up overnight is either cargo or a lesson."
+            ],
+            afternoon: [
+                "Afternoon shifts move heavy loads. Heavy loads break weak hands. Stay clear.",
+                "The stevedores listen when I nod. That's the whole job."
+            ],
+            evening: [
+                "Evening collections. The harbor keeps books deeper than Customs does.",
+                "Doors that open at night open because someone like me arranged it."
+            ],
+            night: [
+                "Pier 31's lit. Bring cash or bring intent.",
+                "Night water takes what night work leaves. Simple as gravity."
+            ]
+        },
+        service: 'safehouse',
+        serviceFaction: 'demon',
+        specialService: 'Pier 31 certification',
+        specialServiceFlags: ['demon_ending_enforcer', 'demon_ending_monster']
     }
 };

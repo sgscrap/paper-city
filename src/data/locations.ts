@@ -76,5 +76,15 @@ export const LOCATIONS: Record<string, Location & { neighbors: { north?: string,
             south: 'transit_hub'
         },
         actions: ['open_foundry_press', 'open_foundry_scrap', 'open_foundry_council']
+    },
+    the_waterfront: {
+        id: 'the_waterfront',
+        name: 'The Waterfront',
+        description: 'Container cranes and customs seals. Everything the city consumes arrives here, and everything it hides leaves the same way.',
+        connectedTo: ['the_block'],
+        neighbors: {
+            north: 'the_block'
+        },
+        actions: ['open_dock_manifests', 'open_dock_sort', 'open_customs_house']
     }
 };

@@ -81,6 +81,37 @@ export const ITEMS: Record<string, Item> = {
         effects: [{ stat: 'luck', value: 2 }]
     },
 
+    // --- THE WATERFRONT (parity set: one utility item per faction playstyle) ---
+    'harbor_seal': {
+        id: 'harbor_seal',
+        name: 'Harbor Seal',
+        type: 'misc',
+        description: 'An unbroken customs seal, valid anywhere paperwork matters. Official-adjacent.',
+        cost: 45,
+        effects: [{ stat: 'charisma', value: 2 }]
+    },
+    'redrafted_manifest': {
+        id: 'redrafted_manifest',
+        name: 'Redrafted Manifest',
+        type: 'misc',
+        description: 'The true cargo list, corrected in a hand that was never there.',
+        cost: 45,
+        effects: [{ stat: 'intelligence', value: 2 }]
+    },
+    'crane_hook': {
+        id: 'crane_hook',
+        name: 'Crane Hook',
+        type: 'weapon',
+        description: 'A mooring hook that left the dock the honest way: inside a coat.',
+        cost: 45,
+        weaponStats: {
+            damage: 7,
+            accuracy: 70,
+            critChance: 10
+        },
+        effects: [{ stat: 'power', value: 1 }]
+    },
+
     // --- FOUNDRY ROW (parity set: one utility item per faction playstyle) ---
     'pressed_crest': {
         id: 'pressed_crest',

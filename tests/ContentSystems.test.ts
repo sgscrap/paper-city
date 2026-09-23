@@ -367,7 +367,15 @@ describe('Content systems', () => {
         const unlocked = useGameStore.getState();
         expect(canAccessCareer(unlocked, CAREERS.data_entry_intern)).toBe(true);
         expect(canAccessNpcService(unlocked, NPCS.npc_ghost)).toBe(true);
-        expect(unlocked.contracts.offers.some((offer) => offer.requiredReputation === 8 && offer.faction === 'ghost')).toBe(true);
+        // The reputation-gated ghost offer rotates through the seeded daily pool,
+        // so scan a window of days (as a player would experience across a week)
+        // instead of pinning day 1's exact three offers.
+        let sawGatedGhostOffer = false;
+        for (let day = 1; day <= 30 && !sawGatedGhostOffer; day++) {
+            const offers = generateDailyContracts(day, unlocked);
+            sawGatedGhostOffer = offers.some((offer) => offer.requiredReputation === 8 && offer.faction === 'ghost');
+        }
+        expect(sawGatedGhostOffer).toBe(true);
     });
 
     it('shows the correct persistent NPC reaction for each faction ending', () => {

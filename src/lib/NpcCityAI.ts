@@ -7,6 +7,7 @@ import { MAP_DEFINITIONS } from '@/data/maps';
 export const VENUE_NAMES: Record<string, string> = {
     the_block: 'The Block',
     foundry_row: 'Foundry Row',
+    the_waterfront: 'The Waterfront',
     dt_bmore: 'Downtown Baltimore',
     corporate_towers: 'Corporate Towers',
     underground_markets: 'Underground Markets',

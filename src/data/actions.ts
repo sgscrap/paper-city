@@ -179,5 +179,57 @@ export const ACTIONS: Record<string, ActionDefinition> = {
             xp: 18,
             stats: { charisma: 1 }
         }
+    },
+
+    // --- THE WATERFRONT (parity set: same energy/time band, faction-flavored outcomes) ---
+    DOCK_MANIFEST_AUDIT: {
+        id: 'DOCK_MANIFEST_AUDIT',
+        label: 'Manifest Audit',
+        description: 'Check arriving cargo against the stamped manifests. Lead seals do not lie; people do.',
+        cost: {
+            time: 120,
+            will: 20
+        },
+        reqs: {
+            stats: { intelligence: 10 }
+        },
+        rewards: {
+            money: 85,
+            xp: 30,
+            stats: { intelligence: 1 }
+        }
+    },
+    DOCK_CONTAINER_SORT: {
+        id: 'DOCK_CONTAINER_SORT',
+        label: 'Container Sort',
+        description: 'Break down mixed lots at the stevedore shed and grade what the cranes dropped.',
+        cost: {
+            time: 90,
+            will: 15
+        },
+        reqs: {
+            stats: { power: 10 }
+        },
+        rewards: {
+            money: 60,
+            xp: 28,
+            stats: { power: 1 }
+        }
+    },
+    CUSTOMS_HOUSE_REVIEW: {
+        id: 'CUSTOMS_HOUSE_REVIEW',
+        label: 'Customs Review',
+        description: 'Sit in on the customs docket and learn which ships the city is watching.',
+        cost: {
+            time: 30,
+            will: 5
+        },
+        reqs: {
+            stats: { charisma: 10 }
+        },
+        rewards: {
+            xp: 18,
+            stats: { charisma: 1 }
+        }
     }
 };

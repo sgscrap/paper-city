@@ -262,6 +262,21 @@ for (const [mapId, map] of Object.entries(MAPS)) {
 }
 pass('building actions routed');
 
+// ============ RULE: fight targets reference real enemies ============
+// A fight building whose target enemy doesn't exist is a dead click.
+// Also compiles enemies.ts (import pulls it into the program) and checks its registry.
+const enemiesFile = path.join(projectRoot, 'src/data/enemies.ts');
+const enemyExports = getExports(enemiesFile);
+const ENEMIES = extractRecord(pick(enemyExports, 'ENEMIES'));
+for (const [mapId, map] of Object.entries(MAPS)) {
+    for (const b of map.buildings || []) {
+        if (b.action === 'fight' && b.target && !ENEMIES[b.target]) {
+            err('FIGHT_TARGET', `${mapId}: fight target "${b.target}" is not a defined enemy`);
+        }
+    }
+}
+pass(`fight targets verified (${Object.keys(ENEMIES).length} enemies)`);
+
 // ============ RULE: item integrity ============
 const ITEM_TYPES = new Set(['consumable', 'weapon', 'misc', 'electronics', 'luxury', 'gym']);
 for (const [id, item] of Object.entries(ITEMS)) {

@@ -189,6 +189,9 @@ export default function GamePage() {
                         case 'open_foundry_press': store.dispatchAction('FOUNDRY_PRESS_WORK'); break;
                         case 'open_foundry_scrap': store.dispatchAction('FOUNDRY_SCRAP_SORT'); break;
                         case 'open_foundry_council': store.dispatchAction('FOUNDRY_COUNCIL_CHECK'); break;
+                        case 'open_dock_manifests': store.dispatchAction('DOCK_MANIFEST_AUDIT'); break;
+                        case 'open_dock_sort': store.dispatchAction('DOCK_CONTAINER_SORT'); break;
+                        case 'open_customs_house': store.dispatchAction('CUSTOMS_HOUSE_REVIEW'); break;
                         case 'open_jobs': openService('jobs', 'jobs'); break;
                         case 'open_deeds_office': useUIStore.getState().toast({ title: 'RESTRICTED_ACCESS', description: 'Land ownership protocols open later.', variant: 'warning' }); break;
                         case 'travel': if (target && store.setLocation(target)) { store.advanceTime(15, 'travel', target); useUIStore.getState().toast({ title: 'Travel', description: `Traveled to ${target}`, variant: 'neutral' }); useUIStore.getState().triggerShake(); } break;
