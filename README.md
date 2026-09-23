@@ -6,6 +6,21 @@ The desktop identity uses a three-faction city sigil: Angel order, Ghost informa
 
 The canonical implementation lives in this `paper-city/` Next.js application, with an Electron desktop launcher for local testing.
 
+## ⬇️ Download & Play
+
+**Latest build: [Update 0.1.2 — The City Is Awake](https://github.com/sgscrap/paper-city/releases/tag/v0.1.2)** — living NPC schedules, time-of-day dialogue, street encounters, portable services.
+
+1. Grab **`Paper-City-Setup-0.1.2.exe`** from the [Releases page](https://github.com/sgscrap/paper-city/releases) (all builds: https://github.com/sgscrap/paper-city/releases)
+2. Run the installer. If Windows SmartScreen appears, choose **More info → Run anyway**
+3. Launch **Paper City** from your desktop shortcut or Start menu — the main menu shows the build number (`build v0.1.2`)
+
+- Windows 10/11 (64-bit), ~200 MB disk space
+- **Fully offline** after install — no account, no internet connection required
+- Saves live on your machine and **carry over between updates**
+- Found a bug? Open an issue or post in [r/PaperCityRPG](https://www.reddit.com/r/PaperCityRPG/) with your build number
+
+Developers: run from source with `npm install && npm run desktop:prod`, or see the [one-command release pipeline](#one-command-release) for publishing builds.
+
 The main menu displays a **build stamp** (`build v0.1.2`) sourced directly from `package.json` at compile time, so it always matches the packaged installer version. Film-grain and paper textures are generated inline via SVG turbulence instead of image files, keeping the packaged app fully offline-safe with a clean console.
 
 ### Packaged-app smoke test
