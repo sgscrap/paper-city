@@ -84,10 +84,14 @@ if (pkg.version === VERSION) {
 }
 
 step('Preflight: gh auth, git state');
-try {
-    execSync('gh auth status', { stdio: 'pipe' });
-} catch {
-    die('gh CLI is not authenticated. Run: gh auth login');
+if (!dryRun) {
+    try {
+        execSync('gh auth status', { stdio: 'pipe' });
+    } catch {
+        die('gh CLI is not authenticated. Run: gh auth login');
+    }
+} else {
+    process.stdout.write('  (dry-run: skipping gh auth check — nothing will be published)\n');
 }
 const gitStatus = execSync('git status --porcelain', { cwd: projectRoot, encoding: 'utf8' }).trim();
 if (gitStatus && !dryRun) {
