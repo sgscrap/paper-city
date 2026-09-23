@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1280px; height: 640px; overflow: hidden; background: #09090b; }
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        color: #fafafa;
+        position: relative;
+    }
+    /* City grid backdrop */
+    .grid {
+        position: absolute; inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+        background-size: 64px 64px;
+    }
+    .vignette {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.75) 100%);
+    }
+    /* Faction glow orbs */
+    .orb { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: 0.5; }
+    .orb.angel { width: 420px; height: 420px; background: #4ade80; top: -160px; left: -120px; }
+    .orb.ghost { width: 420px; height: 420px; background: #a78bfa; bottom: -160px; left: 430px; }
+    .orb.demon { width: 420px; height: 420px; background: #f87171; top: -140px; right: -120px; }
+
+    .content {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        text-align: center; gap: 22px;
+        padding: 60px;
+    }
+    .kicker {
+        font-size: 20px; letter-spacing: 0.5em; text-transform: uppercase;
+        color: #a1a1aa; font-weight: 600;
+    }
+    h1 {
+        font-size: 118px; font-weight: 900; letter-spacing: 0.06em;
+        text-transform: uppercase; line-height: 0.95;
+        text-shadow: 0 0 40px rgba(255,255,255,0.25);
+    }
+    .tagline {
+        font-size: 27px; color: #d4d4d8; font-weight: 400; letter-spacing: 0.02em;
+        max-width: 900px; line-height: 1.45;
+    }
+    .factions {
+        display: flex; gap: 26px; margin-top: 14px;
+    }
+    .faction {
+        display: flex; align-items: center; gap: 10px;
+        font-size: 19px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase;
+        padding: 12px 26px; border-radius: 9999px;
+        border: 1px solid;
+    }
+    .faction .dot { width: 14px; height: 14px; border-radius: 9999px; }
+    .faction.angel { border-color: rgba(74,222,128,0.45); color: #4ade80; }
+    .faction.angel .dot { background: #4ade80; box-shadow: 0 0 14px #4ade80; }
+    .faction.ghost { border-color: rgba(167,139,250,0.45); color: #a78bfa; }
+    .faction.ghost .dot { background: #a78bfa; box-shadow: 0 0 14px #a78bfa; }
+    .faction.demon { border-color: rgba(248,113,113,0.45); color: #f87171; }
+    .faction.demon .dot { background: #f87171; box-shadow: 0 0 14px #f87171; }
+    .download {
+        margin-top: 16px;
+        display: flex; align-items: center; gap: 16px;
+        background: #fafafa; color: #09090b;
+        font-size: 24px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+        padding: 18px 42px; border-radius: 14px;
+        box-shadow: 0 0 50px rgba(255,255,255,0.18);
+    }
+    .download .arrow { font-size: 26px; }
+    .download small {
+        font-size: 15px; font-weight: 700; letter-spacing: 0.18em;
+        color: #52525b; text-transform: uppercase;
+    }
+</style>
+</head>
+<body>
+    <div class="grid"></div>
+    <div class="orb angel"></div>
+    <div class="orb ghost"></div>
+    <div class="orb demon"></div>
+    <div class="vignette"></div>
+    <div class="content">
+        <div class="kicker">Coalition OS // Windows Build</div>
+        <h1>Paper City</h1>
+        <div class="tagline">A systems-driven urban RPG about identity, influence, and survival — where the city remembers everything you do.</div>
+        <div class="factions">
+            <div class="faction angel"><div class="dot"></div>Angel</div>
+            <div class="faction ghost"><div class="dot"></div>Ghost</div>
+            <div class="faction demon"><div class="dot"></div>Demon</div>
+        </div>
+        <div class="download">⬇ Download Free &nbsp;<small>v0.1.2 · Offline · Windows</small></div>
+    </div>
+</body>
+</html>
