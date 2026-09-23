@@ -42,7 +42,8 @@ export const MAP_DEFINITIONS: Record<string, MapDef> = {
 
             // Exits
             { x: 350, y: 0, w: 100, h: 20, label: 'TO DT B-MORE', type: 'exit', action: 'travel', target: 'dt_bmore' },
-            { x: 350, y: 580, w: 100, h: 20, label: 'TO SLUMS', type: 'exit', action: 'travel', target: 'underground_markets' }
+            { x: 350, y: 580, w: 100, h: 20, label: 'TO SLUMS', type: 'exit', action: 'travel', target: 'underground_markets' },
+            { x: 660, y: 460, w: 120, h: 24, label: 'TO FOUNDRY ROW', type: 'exit', action: 'travel', target: 'foundry_row' }
         ]
     },
     'underground_markets': {
@@ -92,6 +93,26 @@ export const MAP_DEFINITIONS: Record<string, MapDef> = {
 
             // Exits
             { x: 350, y: 580, w: 100, h: 20, label: 'EXIT TO BLOCK', type: 'exit', action: 'travel', target: 'the_block' }
+        ]
+    },
+    'foundry_row': {
+        id: 'foundry_row',
+        width: 800,
+        height: 600,
+        spawn: { x: 400, y: 452 },
+        buildings: [
+            // Interactive workshops
+            { x: 40, y: 40, w: 180, h: 130, label: 'FOUNDRY PRESS', type: 'building', action: 'open_foundry_press' },
+            { x: 280, y: 40, w: 200, h: 140, label: 'SCRAP & SORT', type: 'building', action: 'open_foundry_scrap' },
+            { x: 600, y: 40, w: 150, h: 130, label: 'BLOCK 8', type: 'building', action: 'fight', target: 'foundry_skulk' },
+            { x: 40, y: 260, w: 160, h: 120, label: 'ALL-FACTIONS COUNTER', type: 'building', action: 'open_economy' },
+            { x: 600, y: 260, w: 150, h: 120, label: 'COUNCIL HALL', type: 'building', action: 'open_foundry_council' },
+            // Decorations
+            { x: 280, y: 240, w: 120, h: 80, label: 'SLAB STACK', type: 'decoration' },
+            { x: 430, y: 240, w: 120, h: 80, label: 'FLASHING SIGN', type: 'decoration' },
+            // Exits (bidirectional: the_block already exits here)
+            { x: 350, y: 0, w: 100, h: 20, label: 'TO THE BLOCK', type: 'exit', action: 'travel', target: 'the_block' },
+            { x: 350, y: 580, w: 100, h: 20, label: 'TO TRANSIT', type: 'exit', action: 'travel', target: 'transit_hub' }
         ]
     }
 };

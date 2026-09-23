@@ -76,6 +76,21 @@ export const NPC_SCHEDULES: Record<string, NPCScheduleBlock[]> = {
     npc_mayor: [
         { from: 480, to: 1200, location: 'political_offices' },
         { from: 1200, to: 1440, location: 'dt_bmore' } // Evening walkabouts
+    ],
+
+    // --- FOUNDRY ROW ---
+    npc_foundry_grip: [
+        // Lives on the Row: furnaces at 6 AM, night watch till midnight, then sleeps above the council hall.
+        { from: 360, to: 1440, location: 'foundry_row' }
+    ],
+    npc_foundry_needle: [
+        // Paper rounds through The Block while the morning crews are out, then holds the Row's counter.
+        { from: 420, to: 720, location: 'the_block' },
+        { from: 720, to: 1440, location: 'foundry_row' }
+    ],
+    npc_foundry_slide: [
+        // Sleeps in Block 8, sweeps the Row from 6 AM, opens the pit when the council lights go amber.
+        { from: 360, to: 1440, location: 'foundry_row' }
     ]
 };
 

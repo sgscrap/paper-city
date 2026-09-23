@@ -58,6 +58,16 @@ Bumps `package.json`, runs typecheck + lint + unit tests, builds, packages the N
 
 ## Current game systems
 
+### Districts
+
+The city map now spans seven districts. **Foundry Row** (`foundry_row`) is the newest — a decommissioned printworks strip between The Block and the Transit Hub, and the city's neutral ground:
+
+- **All-Factions Counter** — one vendor (via the Economy view) stocking the parity set: `pressed_crest` (Angel, charisma +2), `counterfeit_ledger` (Ghost, intelligence +2), `weighted_knuckles` (Demon, damage-7 weapon) — all at the same 45-credit price, reputation 8 required.
+- **Three faction work venues** — Foundry Press (Angel, `FOUNDRY_PRESS_WORK`), Scrap & Sort (Ghost, `FOUNDRY_SCRAP_SORT`), and Council Hall (social influence, `FOUNDRY_COUNCIL_CHECK`) — same energy/time band, faction-flavored payouts.
+- **Three scheduled residents** — Grip (Angel), Needle (Ghost, mornings on The Block), Slide (Demon) — with full daypart dialogue, gated services that travel with them, and ending-flag special services.
+- **Daily contracts** — one per faction in the rotating pool (Foundry Press Run, Scrap Audit, Block Eight Collection), plus the Block 8 fight venue.
+- Authored end-to-end through `docs/ASSET_PROCEDURE.md` gates; enforced by `tests/FoundryRow.test.ts` and `npm run assets:check`.
+
 ### Faction identity
 
 Players choose between three broad directions:

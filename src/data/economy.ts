@@ -112,6 +112,19 @@ export const FACTION_VENDORS: FactionVendor[] = [
             { itemId: 'broken_bottle', price: 8 },
             { itemId: 'switchblade', price: 90 }
         ]
+    },
+    {
+        id: 'vendor_all_factions_counter',
+        name: 'All-Factions Counter',
+        location: 'foundry_row',
+        faction: 'angel',
+        requiredReputation: 8,
+        description: 'Neutral foundry surplus. Ask for the shelf that matches your colors.',
+        stock: [
+            { itemId: 'pressed_crest', price: 45 },
+            { itemId: 'counterfeit_ledger', price: 45 },
+            { itemId: 'weighted_knuckles', price: 45 }
+        ]
     }
 ];
 

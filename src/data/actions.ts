@@ -127,5 +127,57 @@ export const ACTIONS: Record<string, ActionDefinition> = {
             xp: 5
             // Actual money win handled by logic, but baseline stats here
         }
+    },
+
+    // --- FOUNDRY ROW (parity set: same energy/time band, faction-flavored outcomes) ---
+    FOUNDRY_PRESS_WORK: {
+        id: 'FOUNDRY_PRESS_WORK',
+        label: 'Press Work',
+        description: 'Strike a run of plates on the old foundry press. Honest, loud, reliable.',
+        cost: {
+            time: 120,
+            will: 20
+        },
+        reqs: {
+            stats: { power: 10 }
+        },
+        rewards: {
+            money: 85,
+            xp: 30,
+            stats: { power: 1 }
+        }
+    },
+    FOUNDRY_SCRAP_SORT: {
+        id: 'FOUNDRY_SCRAP_SORT',
+        label: 'Scrap & Sort',
+        description: 'Sort the day\'s scrap into resale grades. Quiet eyes find quiet value.',
+        cost: {
+            time: 90,
+            will: 15
+        },
+        reqs: {
+            stats: { intelligence: 10 }
+        },
+        rewards: {
+            money: 60,
+            xp: 28,
+            stats: { intelligence: 1 }
+        }
+    },
+    FOUNDRY_COUNCIL_CHECK: {
+        id: 'FOUNDRY_COUNCIL_CHECK',
+        label: 'Council Hearing',
+        description: 'Sit in on the neutral council and hear who is bidding for the Row.',
+        cost: {
+            time: 30,
+            will: 5
+        },
+        reqs: {
+            stats: { charisma: 10 }
+        },
+        rewards: {
+            xp: 18,
+            stats: { charisma: 1 }
+        }
     }
 };

@@ -558,5 +558,109 @@ export const NPCS: Record<string, NPC> = {
         },
         service: 'discounts',
         serviceFaction: 'angel'
+    },
+
+    // --- FOUNDRY ROW ---
+    npc_foundry_grip: {
+        id: 'npc_foundry_grip',
+        name: 'Grip',
+        location: 'foundry_row',
+        faction: 'angel',
+        alignment: 'good',
+        socialEffects: { chat: { karma: 1, luck: 1, relationship: 2 }, gift: { karma: 1, relationship: 8, trust: 1 }, insult: { karma: -2, fear: 2, relationship: -10 } },
+        baseDialogue: [
+            "A press doesn't care who owns it. It cares whether the operator shows up.",
+            "Row rule one: machines first, politics second. Keeps the peace - mostly."
+        ],
+        daypartDialogue: {
+            morning: [
+                "Furnaces are hot by six. Best steel of the day comes off the first shift.",
+                "Morning, and already three crews want the same press. Line forms behind the person who actually works."
+            ],
+            afternoon: [
+                "Midday crowd's all brokers and muscle. The work still gets done by the quiet ones.",
+                "Afternoon inventory. Everything on this Row was something else before it was this."
+            ],
+            evening: [
+                "Evening shift is family hour on the Row. Watch who walks whom home.",
+                "Angels keep a ladder out for whoever needs it. You saw nothing."
+            ],
+            night: [
+                "Night watch. The Row's quiet, but quiet here is loaded.",
+                "I lock the furnaces at midnight. Whatever you're forging, forge it before then."
+            ]
+        },
+        service: 'contracts',
+        serviceFaction: 'angel',
+        specialService: 'Press maintenance waiver',
+        specialServiceFlags: ['angel_ending_steward', 'angel_ending_authority']
+    },
+    npc_foundry_needle: {
+        id: 'npc_foundry_needle',
+        name: 'Needle',
+        location: 'foundry_row',
+        faction: 'ghost',
+        alignment: 'opportunistic',
+        socialEffects: { chat: { relationship: 2, trust: 1 }, gift: { relationship: 9, trust: 2 }, insult: { karma: -1, fear: 3, relationship: -12 } },
+        baseDialogue: [
+            "Every machine on this Row was bought twice - once with money, once with favors. I keep the second ledger.",
+            "Bolt counts, shift logs, lock combinations. The Row runs on paper. I run the paper."
+        ],
+        daypartDialogue: {
+            morning: [
+                "Morning audit. You'd be amazed what people sign before coffee.",
+                "Early crew list is up. Want to know who owes who? It's all in the overtime."
+            ],
+            afternoon: [
+                "Afternoon rates are my rates. Everything's negotiable except the spread.",
+                "Spare parts move faster when nobody writes down where they went."
+            ],
+            evening: [
+                "Evening edition's out - who's bidding, who's bluffing, who's broke.",
+                "Brokers pay for quiet. Muscle pays for noise. I sell both and keep the difference."
+            ],
+            night: [
+                "The night ledger's the honest one. No committee to edit it.",
+                "Sleep is a weakness I'll trade you a secret to avoid."
+            ]
+        },
+        service: 'market',
+        serviceFaction: 'ghost',
+        specialService: 'Scrap futures sheet',
+        specialServiceFlags: ['ghost_ending_channel', 'ghost_ending_broker']
+    },
+    npc_foundry_slide: {
+        id: 'npc_foundry_slide',
+        name: 'Slide',
+        location: 'foundry_row',
+        faction: 'demon',
+        alignment: 'dangerous',
+        socialEffects: { chat: { karma: -1, fear: 2, relationship: 1 }, gift: { relationship: 7, trust: 2 }, insult: { karma: -2, fear: 6, relationship: -14 } },
+        baseDialogue: [
+            "Block 8 collects rent after dark. Most people pay by not being there.",
+            "The Row's neutral because we keep it neutral. You're welcome. That courtesy has a maintenance fee."
+        ],
+        daypartDialogue: {
+            morning: [
+                "Morning sweep. Block 8's clean, which means everybody behaved. For once.",
+                "Sunrise inventory: nothing missing, nobody missing. Good night's work."
+            ],
+            afternoon: [
+                "Afternoon inspections. Paper's not the only thing that gets pressed here.",
+                "Carry yourself right on this Row and you'll never see the inside of Block 8."
+            ],
+            evening: [
+                "Evening odds are posted. Block 8 opens when the council lights go amber.",
+                "Big spenders, big losers, same people usually. Doors open soon."
+            ],
+            night: [
+                "Rent's due for anyone still on the Row. The pit takes cash or teeth.",
+                "Nights here are simple: the strong walk, the smart nod, the slow pay."
+            ]
+        },
+        service: 'safehouse',
+        serviceFaction: 'demon',
+        specialService: 'Pit-weight certification',
+        specialServiceFlags: ['demon_ending_enforcer', 'demon_ending_monster']
     }
 };

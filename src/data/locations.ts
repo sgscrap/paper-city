@@ -65,5 +65,16 @@ export const LOCATIONS: Record<string, Location & { neighbors: { north?: string,
             south: 'the_block'
         },
         actions: ['shop_clothing', 'shop_electronics', 'arcade_play', 'gym_shopping']
+    },
+    foundry_row: {
+        id: 'foundry_row',
+        name: 'Foundry Row',
+        description: 'Decommissioned printworks turned neutral workshops. Every faction bids for the same machines.',
+        connectedTo: ['the_block', 'transit_hub'],
+        neighbors: {
+            north: 'the_block',
+            south: 'transit_hub'
+        },
+        actions: ['open_foundry_press', 'open_foundry_scrap', 'open_foundry_council']
     }
 };

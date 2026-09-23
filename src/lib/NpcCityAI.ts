@@ -6,6 +6,7 @@ import { MAP_DEFINITIONS } from '@/data/maps';
 /** Player-facing names for NPC venues, used by schedule-aware UI everywhere. */
 export const VENUE_NAMES: Record<string, string> = {
     the_block: 'The Block',
+    foundry_row: 'Foundry Row',
     dt_bmore: 'Downtown Baltimore',
     corporate_towers: 'Corporate Towers',
     underground_markets: 'Underground Markets',

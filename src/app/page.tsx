@@ -186,6 +186,9 @@ export default function GamePage() {
                         case 'open_club': setActiveTab('club'); break;
                         case 'open_leaderboard': setActiveTab('leaderboard'); break;
                         case 'open_economy': setActiveTab('economy'); break;
+                        case 'open_foundry_press': store.dispatchAction('FOUNDRY_PRESS_WORK'); break;
+                        case 'open_foundry_scrap': store.dispatchAction('FOUNDRY_SCRAP_SORT'); break;
+                        case 'open_foundry_council': store.dispatchAction('FOUNDRY_COUNCIL_CHECK'); break;
                         case 'open_jobs': openService('jobs', 'jobs'); break;
                         case 'open_deeds_office': useUIStore.getState().toast({ title: 'RESTRICTED_ACCESS', description: 'Land ownership protocols open later.', variant: 'warning' }); break;
                         case 'travel': if (target && store.setLocation(target)) { store.advanceTime(15, 'travel', target); useUIStore.getState().toast({ title: 'Travel', description: `Traveled to ${target}`, variant: 'neutral' }); useUIStore.getState().triggerShake(); } break;

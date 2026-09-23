@@ -81,6 +81,37 @@ export const ITEMS: Record<string, Item> = {
         effects: [{ stat: 'luck', value: 2 }]
     },
 
+    // --- FOUNDRY ROW (parity set: one utility item per faction playstyle) ---
+    'pressed_crest': {
+        id: 'pressed_crest',
+        name: 'Pressed Crest',
+        type: 'misc',
+        description: 'A coalition medallion struck off the old presses. Civic doors open a little easier for the visibly affiliated.',
+        cost: 45,
+        effects: [{ stat: 'charisma', value: 2 }]
+    },
+    'counterfeit_ledger': {
+        id: 'counterfeit_ledger',
+        name: 'Counterfeit Ledger',
+        type: 'misc',
+        description: 'Numbers that were true once, twice removed. Useful for people who trade on information.',
+        cost: 45,
+        effects: [{ stat: 'intelligence', value: 2 }]
+    },
+    'weighted_knuckles': {
+        id: 'weighted_knuckles',
+        name: 'Weighted Knuckles',
+        type: 'weapon',
+        description: 'Press bearings in a glove. Slow, heavy, final.',
+        cost: 45,
+        weaponStats: {
+            damage: 7,
+            accuracy: 70,
+            critChance: 10
+        },
+        effects: [{ stat: 'power', value: 1 }]
+    },
+
     // --- GYM / HEALTH ---
     'protein_shake': {
         id: 'protein_shake',

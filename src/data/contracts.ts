@@ -54,6 +54,37 @@ const CONTRACTS: Omit<ContractOffer, 'expiresDay'>[] = [
         reward: { cash: 140, xp: 55, reputation: 7 }
     },
     {
+        id: 'foundry_press_run',
+        title: 'Foundry Press Run',
+        description: 'Work a shift on the old presses at Foundry Row.',
+        faction: 'angel',
+        sourceNpcId: 'npc_foundry_grip',
+        kind: 'work',
+        objective: { trigger: 'action_complete', target: 'FOUNDRY_PRESS_WORK' },
+        reward: { cash: 85, xp: 30, reputation: 4 }
+    },
+    {
+        id: 'foundry_scrap_audit',
+        title: 'Scrap Audit',
+        description: 'Needle needs an extra pair of hands sorting the day\'s scrap at Foundry Row.',
+        faction: 'ghost',
+        sourceNpcId: 'npc_foundry_needle',
+        kind: 'economy',
+        objective: { trigger: 'action_complete', target: 'FOUNDRY_SCRAP_SORT' },
+        reward: { cash: 80, xp: 32, reputation: 4 }
+    },
+    {
+        id: 'foundry_block_eight',
+        title: 'Block Eight Collection',
+        description: 'Slide wants the Block 8 rent collected. One way or another.',
+        faction: 'demon',
+        sourceNpcId: 'npc_foundry_slide',
+        kind: 'combat',
+        objective: { trigger: 'combat_result', target: 'win' },
+        combatEncounterId: 'challenge_demon_pit',
+        reward: { cash: 120, xp: 45, reputation: 5 }
+    },
+    {
         id: 'club_angel_outreach',
         title: 'Open Door Outreach',
         description: 'Welcome a vulnerable resident into a safer night at Club Lust.',
