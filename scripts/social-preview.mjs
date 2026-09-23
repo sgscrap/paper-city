@@ -63,9 +63,9 @@ if (!html.includes('__VERSION__')) {
 const stagedHtml = TEMPLATE.replace(/\.html$/, '.render.html');
 fs.writeFileSync(stagedHtml, html.replace(/__VERSION__/g, `v${version}`));
 
-// Write a temporary capture script ("electron -e" hangs on Windows).
-// NOTE: Electron+shell:true on Windows fails with absolute backslash paths —
-// always pass relative paths with cwd set to the project root.
+// Write a temporary capture script, then invoke the local Electron binary
+// directly (node_modules/electron/dist/electron.exe <script>) — no npx, no
+// shell, no Windows path quirks, no DEP0190 warning.
 const captureScript = path.join(projectRoot, 'docs', '.banner-capture.cjs');
 const stagedRel = path.relative(projectRoot, stagedHtml).split(path.sep).join('/');
 const pngRel = path.relative(projectRoot, PNG).split(path.sep).join('/');
@@ -81,10 +81,17 @@ app.whenReady().then(async () => {
     app.quit();
 });`);
 
-const capture = spawnSync('npx', ['electron', path.relative(projectRoot, captureScript).split(path.sep).join('/')], {
+const electronBin = path.join(
+    projectRoot, 'node_modules', 'electron', 'dist',
+    process.platform === 'win32' ? 'electron.exe' : process.platform === 'darwin' ? 'Electron.app/Contents/MacOS/Electron' : 'electron'
+);
+if (!fs.existsSync(electronBin)) {
+    die(`Electron binary not found at ${electronBin} — run npm install first.`);
+}
+
+const capture = spawnSync(electronBin, [captureScript], {
     cwd: projectRoot,
     encoding: 'utf8',
-    shell: process.platform === 'win32',
     timeout: 120_000
 });
 
