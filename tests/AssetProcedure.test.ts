@@ -6,6 +6,8 @@ import { NPC_SCHEDULES } from '../src/data/npcSchedules';
 import { ITEMS } from '../src/data/items';
 import { STREET_ENCOUNTERS } from '../src/data/streetEncounters';
 import { VENUE_NAMES } from '../src/lib/NpcCityAI';
+import { generateDailyContracts } from '../src/data/contracts';
+import { FACTION_VENDORS } from '../src/data/economy';
 
 const projectRoot = path.resolve(__dirname, '..');
 const read = (p: string) => fs.readFileSync(path.join(projectRoot, p), 'utf8');
@@ -65,5 +67,47 @@ describe('Asset & Content Authoring Procedure', () => {
                 expect(venues.has(venue), `${enc.id}: unknown venue ${venue}`).toBe(true);
             }
         }
+    });
+
+    it('validator enforces faction parity from the content matrix (matrix rules present)', () => {
+        const validator = read('scripts/validate-assets.mjs');
+        for (const rule of ['MATRIX_PARITY', 'MATRIX_MISSING', 'MATRIX_SHAPE', 'MATRIX_DRIFT', 'CONTRACT_BALANCE', 'VENDOR_PARITY', 'SERVICE_PARITY']) {
+            expect(validator).toContain(rule);
+        }
+        expect(read('src/data/factionContentMatrix.ts')).toContain('FACTION_CONTENT_MATRIX');
+    });
+
+    it('validator hard-fails on degraded contract extraction instead of false-green', () => {
+        const validator = read('scripts/validate-assets.mjs');
+        expect(validator).toContain('extraction degraded');
+    });
+
+    it('contract pool keeps factions within the 2x balance band', () => {
+        // Mirrors the validator's CONTRACT_BALANCE rule from the public generator.
+        const seen = new Map<string, string>();
+        for (let day = 0; day < 400 && seen.size < 300; day++) {
+            for (const offer of generateDailyContracts(day)) seen.set(offer.id, offer.faction);
+        }
+        const counts: Record<string, number> = { angel: 0, ghost: 0, demon: 0 };
+        for (const faction of seen.values()) counts[faction] = (counts[faction] || 0) + 1;
+        const max = Math.max(...Object.values(counts));
+        const min = Math.min(...Object.values(counts));
+        expect(max / Math.max(min, 1)).toBeLessThanOrEqual(2);
+    });
+
+    it('gated faction vendors exist for every faction (vendor parity)', () => {
+        const gated: Record<string, number> = { angel: 0, ghost: 0, demon: 0 };
+        for (const vendor of FACTION_VENDORS) {
+            if ((vendor.requiredReputation ?? 0) > 0) gated[vendor.faction] += 1;
+        }
+        for (const faction of ['angel', 'ghost', 'demon'] as const) {
+            expect(gated[faction], `no gated vendor for ${faction}`).toBeGreaterThan(0);
+        }
+    });
+
+    it('neutral vendors are intentionally ungated (requiredReputation 0)', () => {
+        const counter = FACTION_VENDORS.find((v) => v.id === 'vendor_all_factions_counter');
+        expect(counter).toBeDefined();
+        expect(counter!.requiredReputation ?? 0).toBe(0);
     });
 });

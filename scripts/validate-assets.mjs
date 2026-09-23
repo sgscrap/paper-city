@@ -31,6 +31,10 @@ const srcFiles = [
     'src/data/items.ts',
     'src/data/streetEncounters.ts',
     'src/data/randomEvents.ts',
+    'src/data/contracts.ts',
+    'src/data/quests.ts',
+    'src/data/economy.ts',
+    'src/data/factionContentMatrix.ts',
     'src/types/index.ts'
 ].map((f) => path.join(projectRoot, f));
 
@@ -74,7 +78,7 @@ const die = (msg) => {
     process.exit(2);
 };
 
-let MAPS, NPCS, SCHEDULES, ITEMS, ENCOUNTERS, EVENTS;
+let MAPS, NPCS, SCHEDULES, ITEMS, ENCOUNTERS, EVENTS, CONTRACTS, QUESTS, VENDORS, MATRIX;
 try {
     const mapExports = getExports(srcFiles[0]);
     MAPS = extractRecord(pick(mapExports, 'MAP_DEFINITIONS'));
@@ -93,6 +97,29 @@ try {
 
     const evtExports = getExports(srcFiles[5]);
     EVENTS = extractArray(pick(evtExports, 'RANDOM_EVENTS'));
+
+    // contracts.ts's CONTRACTS is module-private; the AST reader sees it anyway.
+    const contractSf = compiled.getSourceFile(srcFiles[6]);
+    const contractLocal = contractSf.statements.find(
+        (st) => ts.isVariableStatement(st)
+        && st.declarationList.declarations.some((d) => d.name.getText() === 'CONTRACTS')
+    );
+    if (!contractLocal) die('CONTRACTS registry not found in src/data/contracts.ts');
+    CONTRACTS = extractArray({ declarations: [contractLocal.declarationList.declarations.find((d) => d.name.getText() === 'CONTRACTS')] });
+    // Degraded-extraction tripwire: if the source fails to parse, the AST reader
+    // returns garbage instead of throwing — refuse to validate against that.
+    if (!Array.isArray(CONTRACTS) || CONTRACTS.some((c) => !c || typeof c !== 'object' || typeof c.id !== 'string' || typeof c.faction !== 'string')) {
+        die('CONTRACTS extraction degraded (unparseable source?) — refusing to validate');
+    }
+
+    const questExports = getExports(srcFiles[7]);
+    QUESTS = extractRecord(pick(questExports, 'QUESTS'));
+
+    const econExports = getExports(srcFiles[8]);
+    VENDORS = extractArray(pick(econExports, 'FACTION_VENDORS'));
+
+    const matrixExports = getExports(srcFiles[9]);
+    MATRIX = extractRecord(pick(matrixExports, 'FACTION_CONTENT_MATRIX'));
 } catch (e) {
     die(`failed to compile data layer: ${e.message}`);
 }
@@ -270,6 +297,109 @@ for (const evt of EVENTS) {
     }
 }
 pass(`encounters (${ENCOUNTERS.length}) and events (${EVENTS.length}) referenced correctly`);
+
+// ============ RULE: faction parity (procedure §3/§4 balance notes) ============
+// The content matrix (factionContentMatrix.ts) is the *declared* balance contract.
+// These checks compare (a) the three matrix entries against each other, and
+// (b) each declared number against what actually exists in the data layer.
+const FACTION_LIST = ['angel', 'ghost', 'demon'];
+const endingFlags = new Set();
+for (const npc of Object.values(NPCS)) {
+    for (const flag of npc.specialServiceFlags || []) endingFlags.add(flag);
+}
+const servicesByFaction = { angel: [], ghost: [], demon: [] };
+for (const [id, npc] of Object.entries(NPCS)) {
+    if (npc.service && npc.serviceFaction && FACTION_LIST.includes(npc.serviceFaction)) {
+        servicesByFaction[npc.serviceFaction].push(id);
+    }
+}
+
+// --- Matrix self-consistency: every faction declares the same shape ---
+const matrixKeys = ['primaryQuests', 'decisionPoints', 'factionContracts', 'alternateRewards', 'crossFactionContractCount', 'reactiveNpcIds', 'endings'];
+for (const f of FACTION_LIST) {
+    const entry = MATRIX[f];
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        err('MATRIX_MISSING', `FACTION_CONTENT_MATRIX has no entry for "${f}"`);
+        continue;
+    }
+    for (const key of matrixKeys) {
+        if (entry[key] === undefined) err('MATRIX_SHAPE', `matrix.${f}: missing "${key}"`);
+    }
+}
+const numericKeys = ['primaryQuests', 'decisionPoints', 'factionContracts', 'alternateRewards', 'crossFactionContractCount'];
+for (const key of numericKeys) {
+    const vals = FACTION_LIST.map((f) => (MATRIX[f] && typeof MATRIX[f][key] === 'number' ? MATRIX[f][key] : null)).filter((v) => v !== null);
+    if (vals.length === FACTION_LIST.length && new Set(vals).size !== 1) {
+        err('MATRIX_PARITY', `matrix.${key} differs across factions (${FACTION_LIST.map((f) => `${f}:${MATRIX[f][key]}`).join(', ')})`);
+    }
+}
+for (const f of FACTION_LIST) {
+    const entry = MATRIX[f];
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) continue;
+    if (!Array.isArray(entry.endings) || entry.endings.length === 0) {
+        err('MATRIX_SHAPE', `matrix.${f}: endings must be a non-empty array`);
+    } else {
+        for (const flag of entry.endings) {
+            if (typeof flag !== 'string' || !flag.startsWith(`${f}_ending_`)) {
+                err('MATRIX_SHAPE', `matrix.${f}: ending flag "${flag}" does not start with "${f}_ending_"`);
+            }
+            if (!endingFlags.has(flag)) {
+                warn('MATRIX_DRIFT', `matrix.${f} declares ending "${flag}" but no NPC specialServiceFlags reference it`);
+            }
+        }
+    }
+    if (Array.isArray(entry.reactiveNpcIds)) {
+        for (const npcId of entry.reactiveNpcIds) {
+            if (!NPCS[npcId]) err('MATRIX_DRIFT', `matrix.${f}: reactiveNpcIds references unknown NPC "${npcId}"`);
+        }
+    }
+}
+pass('content matrix self-consistency verified (all three factions declare the same shape)');
+
+// --- Matrix vs reality: declared quest/contract counts must match the data ---
+const questCount = { angel: 0, ghost: 0, demon: 0 };
+for (const q of Object.values(QUESTS)) {
+    if (q && FACTION_LIST.includes(q.faction)) questCount[q.faction] += 1;
+}
+for (const f of FACTION_LIST) {
+    const declared = MATRIX[f]?.primaryQuests;
+    if (typeof declared === 'number' && questCount[f] < declared) {
+        err('MATRIX_DRIFT', `matrix.${f} declares ${declared} primaryQuests but quests.ts only ships ${questCount[f]} faction quests`);
+    }
+}
+
+const contractCount = { angel: 0, ghost: 0, demon: 0 };
+for (const c of CONTRACTS) {
+    if (FACTION_LIST.includes(c.faction)) contractCount[c.faction] += 1;
+}
+for (const f of FACTION_LIST) {
+    const declared = MATRIX[f]?.factionContracts;
+    if (typeof declared === 'number' && contractCount[f] < declared) {
+        err('MATRIX_DRIFT', `matrix.${f} declares ${declared} factionContracts but contracts.ts only ships ${contractCount[f]}`);
+    }
+}
+// Pool balance: no faction may dominate the daily board (hard floor AND ceiling).
+const cMax = Math.max(...Object.values(contractCount));
+const cMin = Math.min(...Object.values(contractCount));
+if (cMax > 0 && (cMin === 0 || cMax / cMin > 2)) {
+    err('CONTRACT_BALANCE', `contract pool is lopsided: ${FACTION_LIST.map((f) => `${f}:${contractCount[f]}`).join(', ')} (max/min must stay within 2x)`);
+}
+
+const vendorCount = { angel: 0, ghost: 0, demon: 0 };
+for (const v of VENDORS) {
+    if (v && FACTION_LIST.includes(v.faction) && (v.requiredReputation || 0) > 0) vendorCount[v.faction] += 1;
+}
+for (const f of FACTION_LIST) {
+    if (vendorCount[f] === 0) {
+        err('VENDOR_PARITY', `no gated faction vendor exists for "${f}" (every faction needs equivalent vendor access)`);
+    }
+}
+
+const svcCounts = FACTION_LIST.map((f) => servicesByFaction[f].length);
+if (Math.max(...svcCounts) > 0 && (Math.min(...svcCounts) === 0 || Math.max(...svcCounts) / Math.min(...svcCounts) > 2)) {
+    err('SERVICE_PARITY', `NPC services are lopsided: ${FACTION_LIST.map((f, i) => `${f}:${svcCounts[i]} (${servicesByFaction[f].join(', ') || 'none'})`).join('; ')}`);
+}
+pass(`faction parity verified: quests ${questCount.angel}/${questCount.ghost}/${questCount.demon}, contracts ${contractCount.angel}/${contractCount.ghost}/${contractCount.demon}, vendors ${vendorCount.angel}/${vendorCount.ghost}/${vendorCount.demon}, services ${svcCounts.join('/')}`);
 
 // ============ REPORT ============
 const report = { ok: errors.length === 0, errors, warnings: warns, passed: ok };

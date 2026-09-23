@@ -57,7 +57,7 @@ Every new NPC MUST:
 9. **Special services** need both a display string and ≥1 ending flag (`angel_ending_*`, `ghost_ending_*`, `demon_ending_*`).
 10. **No orphan schedules** — every id in `NPC_SCHEDULES` must exist in `NPCS` (validator-enforced).
 
-**Balance note**: every NPC with a service must have an equivalent on the other two factions (Angel↔Ghost↔Demon parity is tracked in `factionContentMatrix.ts`).
+**Balance note**: every NPC with a service must have an equivalent on the other two factions (Angel↔Ghost↔Demon parity is tracked in `factionContentMatrix.ts`). The validator now enforces this mechanically from the matrix: faction service counts may not exceed a 2x spread, every faction needs at least one gated vendor, and declared matrix numbers are checked against the shipped content (see §9).
 
 ## 4. Items
 
@@ -101,7 +101,7 @@ New content must be reachable and routable:
 - [ ] Daypart dialogue pools non-empty; morning+night present (validator ✅)
 - [ ] Save-compat: INITIAL_STATE + normalize added if state shape changed (review)
 - [ ] Regression tests added for new systems (review)
-- [ ] Faction parity considered (review)
+- [ ] Faction parity considered (validator enforces matrix parity, contract/vendor/service balance — see §9)
 - [ ] `npm run assets:check`, `tsc`, `lint`, `vitest run` all green (CI ✅)
 
 ## 8. Running the gates
@@ -115,3 +115,28 @@ npm run desktop:smoke    # packaged app verification (releases only)
 ```
 
 The validator is the *floor*, not the ceiling. It catches structural mistakes; the review gates catch balance, tone, and parity.
+
+## 9. Faction Parity Gate (validator-enforced)
+
+`factionContentMatrix.ts` is the **declared balance contract** — the numbers each faction arc promises. The validator reads it with the same AST extraction it uses for every other registry and enforces two directions:
+
+**Matrix self-consistency** (errors):
+
+- `MATRIX_MISSING` — every faction (angel/ghost/demon) must have a matrix entry
+- `MATRIX_SHAPE` — every entry must declare `primaryQuests`, `decisionPoints`, `factionContracts`, `alternateRewards`, `crossFactionContractCount`, `reactiveNpcIds`, `endings`; ending flags must match `<faction>_ending_*`
+- `MATRIX_PARITY` — the numeric fields must be identical across all three factions
+
+**Matrix vs reality** (declared numbers are *minimums* — shipping more is allowed, shipping less is drift):
+
+- `MATRIX_DRIFT` (error) — declared `primaryQuests`/`factionContracts` exceed what `quests.ts`/`contracts.ts` actually ship for that faction; `reactiveNpcIds` referencing unknown NPCs
+- `MATRIX_DRIFT` (warning) — a declared ending flag no NPC's `specialServiceFlags` references (a promise the city can't express yet)
+
+**Cross-content balance** (errors):
+
+- `CONTRACT_BALANCE` — per-faction contract counts must stay within a 2x spread (no faction dominates the daily board)
+- `VENDOR_PARITY` — every faction needs at least one gated vendor (`requiredReputation > 0`); deliberately neutral vendors use `requiredReputation: 0` and are excluded from the count by design
+- `SERVICE_PARITY` — per-faction NPC service counts must stay within a 2x spread
+
+The parity pass line doubles as a balance dashboard: `faction parity verified: quests 3/3/3, contracts 7/7/7, vendors 1/1/1, services 3/4/4`.
+
+When a parity error fires, either fix the content or — if the imbalance is intentional — raise *all three* matrix numbers together and ship the missing faction's content in the same change.

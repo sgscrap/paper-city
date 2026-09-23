@@ -118,7 +118,7 @@ export const FACTION_VENDORS: FactionVendor[] = [
         name: 'All-Factions Counter',
         location: 'foundry_row',
         faction: 'angel',
-        requiredReputation: 8,
+        requiredReputation: 0, // Neutral surplus: open to every faction by design.
         description: 'Neutral foundry surplus. Ask for the shelf that matches your colors.',
         stock: [
             { itemId: 'pressed_crest', price: 45 },
