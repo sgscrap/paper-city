@@ -10,7 +10,7 @@ Welcome to **r/PaperCityRPG** — the community hub for Paper City, a systems-dr
 
 **Current build: Update 0.1.2 "The City Is Awake"** → [Patch notes](https://www.reddit.com/r/PaperCityRPG/comments/1wodr5o/update_012_the_city_is_awake_npcs_now_live_in_the/)
 
-1. Download the installer: **`Paper-City-Setup-0.1.2.exe`** — [DOWNLOAD LINK]
+1. Download the installer: **[Paper-City-Setup-0.1.2.exe](https://github.com/sgscrap/paper-city/releases/tag/v0.1.2)** from our [GitHub Releases](https://github.com/sgscrap/paper-city/releases) page
 2. Run the installer and follow the prompts
 3. Launch **Paper City** from your desktop shortcut or Start menu
 
