@@ -209,6 +209,10 @@ export const NPCS: Record<string, NPC> = {
             evening: [
                 "Quitting time for quitters. Last haul of the day needs two backs.",
                 "Evening pay's the same. Evening excuses pay worse."
+            ],
+            night: [
+                "Site's closed. Whatever you're hauling at this hour, that's on you.",
+                "Night work pays double and costs sleep. Choose which you're rich in."
             ]
         },
         jobId: 'manual_laborer',
@@ -313,6 +317,10 @@ export const NPCS: Record<string, NPC> = {
             "The best information arrives between songs."
         ],
         daypartDialogue: {
+            morning: [
+                "Morning. The booth's asleep, but the crate never is. Ever dig through vinyl at 7 AM?",
+                "Clubs run on night math. Mornings are for caffeine and rewiring the floor plan in my head."
+            ],
             afternoon: [
                 "Sound check. A room tells you its secrets when it's empty.",
                 "Daytime Echo is a technician. Nighttime Echo is an archive."
@@ -339,6 +347,10 @@ export const NPCS: Record<string, NPC> = {
             "Back room work pays better when you can keep your nerve."
         ],
         daypartDialogue: {
+            morning: [
+                "Morning. Doors don't open till nine, but trouble clocks in early.",
+                "Walked the block twice already. Mornings show you who's new in town."
+            ],
             afternoon: [
                 "Doors at nine. Day shift's for checking sightlines and exit routes.",
                 "Afternoon is when the amateurs case the joint. I watch them do it."
@@ -443,6 +455,10 @@ export const NPCS: Record<string, NPC> = {
             evening: [
                 "Overtime. The towers run on ambition and bad sleep.",
                 "Evening paperwork. Submit it in triplicate. The night notary costs extra."
+            ],
+            night: [
+                "The towers went dark an hour ago. Whatever business you have with me now, it's off the books.",
+                "Board members don't work nights. Ask me why I do."
             ]
         },
     },
@@ -460,6 +476,10 @@ export const NPCS: Record<string, NPC> = {
             "The Coalition doesn't look down here often."
         ],
         daypartDialogue: {
+            morning: [
+                "You're up early. So am I. That's all you get to know about that.",
+                "Daylight version of me is just a guy walking. Don't make it weird."
+            ],
             afternoon: [
                 "Setting up. Slow customers get the slow prices.",
                 "Daylight down here means the good stock isn't here yet."
@@ -488,6 +508,10 @@ export const NPCS: Record<string, NPC> = {
             "You want to fight? Or just bleed?"
         ],
         daypartDialogue: {
+            morning: [
+                "Morning roadwork. Champions run before breakfast, legends run before anyone's watching.",
+                "Staples don't eat themselves, kid. Come back when my hands are taped."
+            ],
             afternoon: [
                 "Afternoon circuit. Rich guys pay to get hit by me. Easy money.",
                 "Daylight sparing. I go easy. Mostly."
@@ -526,6 +550,10 @@ export const NPCS: Record<string, NPC> = {
             evening: [
                 "Evening walkabouts. Shaking hands downtown - the flat ones and the folded ones.",
                 "Campaign season is every season when you're beloved. Or monitored."
+            ],
+            night: [
+                "A mayor's day ends when the lights go out. These ones I turned off myself. Ask no questions!",
+                "Late-night budget session. The city sleeps; its debts do not. Vote for me!"
             ]
         },
         service: 'discounts',
