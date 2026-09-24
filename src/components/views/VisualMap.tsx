@@ -29,6 +29,10 @@ interface VisualMapProps {
 export const VisualMap = ({ onAction }: VisualMapProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const location = useGameStore((state: GameStore) => state.world.locationId);
+    const playerPower = useGameStore((state: GameStore) => state.player.stats.power);
+    const combatRep = useGameStore((state: GameStore) => state.combatRecord.reputation);
+    const demonRep = useGameStore((state: GameStore) => state.factionReputation.demon || 0);
+    const karma = useGameStore((state: GameStore) => state.player.stats.karma);
     const remotePlayers = useGameStore((state: GameStore) => state.remotePlayers);
     const updateRemotePlayer = useGameStore((state: GameStore) => state.updateRemotePlayer);
     const removeRemotePlayer = useGameStore((state: GameStore) => state.removeRemotePlayer);
@@ -64,6 +68,18 @@ export const VisualMap = ({ onAction }: VisualMapProps) => {
 
     const locationRef = useRef(location);
     useEffect(() => { locationRef.current = location; }, [location]);
+
+    const playerPowerRef = useRef(playerPower);
+    useEffect(() => { playerPowerRef.current = playerPower; }, [playerPower]);
+
+    const combatRepRef = useRef(combatRep);
+    useEffect(() => { combatRepRef.current = combatRep; }, [combatRep]);
+
+    const demonRepRef = useRef(demonRep);
+    useEffect(() => { demonRepRef.current = demonRep; }, [demonRep]);
+
+    const karmaRef = useRef(karma);
+    useEffect(() => { karmaRef.current = karma; }, [karma]);
 
     const posRef = useRef<Point>(mapData.spawn);
     const directionRef = useRef(0);
@@ -213,12 +229,31 @@ export const VisualMap = ({ onAction }: VisualMapProps) => {
             });
 
             posRef.current = { x: nx, y: ny };
+            const pcx = nx + PLAYER_SIZE / 2;
+            const pcy = ny + PLAYER_SIZE / 2;
 
             // --- CITY NPC AI TICK (throttled to ~12fps to save CPU) ---
             if (timestamp - lastNpcTickRef.current > 80) {
                 lastNpcTickRef.current = timestamp;
                 if (Object.keys(npcPositionsRef.current).length > 0) {
-                    const updated = NpcCityAI.update(npcPositionsRef.current, locationRef.current, 0.08);
+                    // Compute player street presence fear factor (power >= 25, high combat rep, or ruthless demon rep)
+                    let fearIntensity = 0;
+                    const cRep = combatRepRef.current;
+                    const pPow = playerPowerRef.current;
+                    const dRep = demonRepRef.current;
+                    const pKarma = karmaRef.current;
+                    if (cRep >= 15 || pPow >= 30 || dRep >= 25 || pKarma <= -25) {
+                        fearIntensity = Math.min(1, Math.max(0.3, (cRep / 30) + (pPow / 60) + (dRep > 0 ? dRep / 50 : 0)));
+                    }
+
+                    const avoidTarget = fearIntensity > 0 ? {
+                        x: pcx,
+                        y: pcy,
+                        radius: 85,
+                        intensity: fearIntensity
+                    } : null;
+
+                    const updated = NpcCityAI.update(npcPositionsRef.current, locationRef.current, 0.08, avoidTarget);
                     npcPositionsRef.current = updated;
                     setNpcPositions(updated);
                     setNearbyNpc((prev) => {
@@ -250,8 +285,6 @@ export const VisualMap = ({ onAction }: VisualMapProps) => {
             }
 
             let newTarget: BuildingRect | null = null;
-            const pcx = nx + PLAYER_SIZE / 2;
-            const pcy = ny + PLAYER_SIZE / 2;
             const radius = 60;
 
             for (const b of mapData.buildings) {

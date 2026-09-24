@@ -42,6 +42,13 @@ export interface NpcWorldPosition {
     inTransit: boolean;
 }
 
+export interface NpcAvoidanceTarget {
+    x: number;
+    y: number;
+    radius?: number;
+    intensity?: number; // 0 to 1, higher means stronger repulsion
+}
+
 const NPC_SIZE = 20;
 const EDGE_MARGIN = 24;
 
@@ -120,7 +127,8 @@ export const NpcCityAI = {
     update(
         positions: Record<string, NpcWorldPosition>,
         mapId: string,
-        dt: number
+        dt: number,
+        avoidTarget?: NpcAvoidanceTarget | null
     ): Record<string, NpcWorldPosition> {
         const map = MAP_DEFINITIONS[mapId];
         if (!map) return positions;
@@ -148,8 +156,25 @@ export const NpcCityAI = {
 
             // Walk toward target with building collision
             const speed = npc.speed * dt;
-            const stepX = (dx / dist) * speed;
-            const stepY = (dy / dist) * speed;
+            let stepX = (dx / dist) * speed;
+            let stepY = (dy / dist) * speed;
+
+            // Street behavior: If player is feared / powerful, yield by stepping aside/away
+            if (avoidTarget && (avoidTarget.intensity || 0) > 0) {
+                const avoidRadius = avoidTarget.radius ?? 90;
+                const toPlayerX = avoidTarget.x - (npc.x + NPC_SIZE / 2);
+                const toPlayerY = avoidTarget.y - (npc.y + NPC_SIZE / 2);
+                const pDist = Math.hypot(toPlayerX, toPlayerY);
+
+                if (pDist > 0 && pDist < avoidRadius) {
+                    const repelStrength = (1 - pDist / avoidRadius) * (avoidTarget.intensity || 1);
+                    const pushFactor = speed * 1.5 * repelStrength;
+                    // Push away from player vector
+                    stepX -= (toPlayerX / pDist) * pushFactor;
+                    stepY -= (toPlayerY / pDist) * pushFactor;
+                }
+            }
+
             const nx = npc.x + stepX;
             const ny = npc.y + stepY;
 

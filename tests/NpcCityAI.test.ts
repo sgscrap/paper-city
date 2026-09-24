@@ -107,6 +107,22 @@ describe('NPC movement AI', () => {
         const pos = { npc_ace: NpcCityAI.spawnFor('npc_ace', 'the_block') };
         expect(NpcCityAI.update(pos, 'unknown_map', 0.1)).toBe(pos);
     });
+
+    it('should push NPCs away from an avoid target when fear intensity is active', () => {
+        const spawned = NpcCityAI.spawnFor('npc_ghost', 'the_block');
+        // Place NPC at open spot (200, 100), aiming towards (300, 100)
+        const initialPos: Record<string, NpcWorldPosition> = {
+            [spawned.id]: { ...spawned, x: 200, y: 100, targetX: 300, targetY: 100, moving: true }
+        };
+        // Player is at (240, 100) — directly in front of the NPC
+        const normalUpdate = NpcCityAI.update(initialPos, 'the_block', 0.5, null);
+        const yieldingUpdate = NpcCityAI.update(initialPos, 'the_block', 0.5, { x: 240, y: 100, radius: 100, intensity: 1.0 });
+
+        // Normal walk progresses forward towards target (higher x)
+        expect(normalUpdate[spawned.id].x).toBeGreaterThan(200);
+        // Yielding push repels away from player (lower x than normal update)
+        expect(yieldingUpdate[spawned.id].x).toBeLessThan(normalUpdate[spawned.id].x);
+    });
 });
 
 describe('Portable NPC services', () => {

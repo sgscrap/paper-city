@@ -164,6 +164,126 @@ export const STREET_ENCOUNTERS: StreetEncounter[] = [
         }),
         relReward: { trust: 1 }
     },
+    {
+        id: 'GRIP_FURNACE_HAUL', npcId: 'npc_foundry_grip', kind: 'offer', weight: 16,
+        venues: ['foundry_row'], timeRange: [360, 1020],
+        lines: [
+            "Need a sturdy back on the scrap hopper for twenty minutes. $45 and a good word with the Row.",
+            "Grip: Coal run just landed. Help shovel before the morning press heats up."
+        ],
+        apply: (state) => ({
+            patch: {
+                player: {
+                    ...state.player,
+                    energy: Math.max(0, state.player.energy - 8),
+                    stats: { ...state.player.stats, worth: state.player.stats.worth + 45, power: state.player.stats.power + 1, karma: state.player.stats.karma + 1 }
+                },
+                factionReputation: withFactionRep(state, 'angel', 1)
+            },
+            toast: { title: 'HOPPER HAULED', description: 'Grip nods respectfully. +$45, +1 Power, +1 Karma, +1 Angel reputation.' }
+        }),
+        relReward: { relationship: 2, trust: 1 }
+    },
+    {
+        id: 'NEEDLE_SECOND_LEDGER', npcId: 'npc_foundry_needle', kind: 'offer', weight: 15,
+        venues: ['foundry_row', 'the_block'], timeRange: [360, 1260],
+        lines: [
+            "I have an invoice that needs to disappear into a pocket. $35 says you have a pocket.",
+            "Needle: Quiet courier work across the tracks. Don't look at the seal, just deliver it."
+        ],
+        apply: (state) => ({
+            patch: {
+                player: {
+                    ...state.player,
+                    stats: { ...state.player.stats, worth: state.player.stats.worth + 35, luck: state.player.stats.luck + 1 }
+                },
+                factionReputation: withFactionRep(state, 'ghost', 1)
+            },
+            toast: { title: 'INVOICE MOVED', description: 'Needle crosses out a line on the second ledger. +$35, +1 Luck, +1 Ghost reputation.' }
+        }),
+        relReward: { relationship: 2, trust: 1 }
+    },
+    {
+        id: 'SLIDE_PIT_STAKE', npcId: 'npc_foundry_slide', kind: 'offer', weight: 14,
+        venues: ['foundry_row'], timeRange: [1020, 1440],
+        lines: [
+            "Block 8 pit needs a challenger warmed up. Step in or stake twenty on the heavy.",
+            "Slide: Midnight crowd is getting restless. Make it interesting or back my fighter."
+        ],
+        requirements: (state) => state.player.stats.worth >= 20,
+        apply: (state) => ({
+            patch: {
+                player: {
+                    ...state.player,
+                    stats: { ...state.player.stats, worth: state.player.stats.worth + 30, power: state.player.stats.power + 1, karma: state.player.stats.karma - 1 }
+                },
+                factionReputation: withFactionRep(state, 'demon', 1)
+            },
+            toast: { title: 'PIT STAKE WON', description: 'Slide watches you pocket the payout. +$30 net, +1 Power, +1 Demon reputation.' }
+        }),
+        relReward: { fear: 1, relationship: 1 }
+    },
+    {
+        id: 'HALYARD_CONTRABAND_TAG', npcId: 'npc_dock_halyard', kind: 'warning', weight: 15,
+        venues: ['the_waterfront'], timeRange: [720, 1440],
+        lines: [
+            "Customs is checking coats on Pier 31. Ditch any hot goods before crossing the gate.",
+            "Halyard: Harbor seals are being inspected. Walk clean or pay the dock tax."
+        ],
+        apply: (state) => ({
+            patch: {
+                player: { ...state.player, stats: { ...state.player.stats, karma: state.player.stats.karma + 1 } },
+                factionReputation: withFactionRep(state, 'angel', 1)
+            },
+            toast: { title: 'INSPECTION AVOIDED', description: 'You skirt the customs checkpoint safely. +1 Karma, +1 Angel reputation.' }
+        }),
+        relReward: { relationship: 2, trust: 1 },
+        dismiss: (state) => ({
+            patch: {
+                player: { ...state.player, stats: { ...state.player.stats, worth: Math.max(0, state.player.stats.worth - 35) } }
+            },
+            toast: { title: 'CUSTOMS FINE', description: 'The inspector tags you at Pier 31. -$35 harbor tariff.' }
+        })
+    },
+    {
+        id: 'CONDOR_MANIFEST_DRAFT', npcId: 'npc_dock_condor', kind: 'offer', weight: 15,
+        venues: ['the_waterfront', 'the_block'], timeRange: [360, 1020],
+        lines: [
+            "Morning cargo draft came off the wire early. Worth $25 for a glimpse of incoming freight?",
+            "Condor: I know what docks in container six. Trade you the tip for lunch money."
+        ],
+        requirements: (state) => state.player.stats.worth >= 25,
+        apply: (state) => ({
+            patch: {
+                player: {
+                    ...state.player,
+                    stats: { ...state.player.stats, worth: state.player.stats.worth + 25, luck: state.player.stats.luck + 2 }
+                },
+                factionReputation: withFactionRep(state, 'ghost', 1)
+            },
+            toast: { title: 'DRAFT READ', description: 'Condor lets you scan the freight manifest. +$25 net, +2 Luck, +1 Ghost reputation.' }
+        }),
+        relReward: { trust: 2 }
+    },
+    {
+        id: 'HARROW_DOCK_SHAKEDOWN', npcId: 'npc_dock_harrow', kind: 'warning', weight: 14,
+        venues: ['the_waterfront'], timeRange: [1020, 1440],
+        lines: [
+            "Pier 31 charges toll after ten. Hand over a cut or carry your own bruises.",
+            "Harrow: Dockside belongs to my crew tonight. Don't wander into the cranes alone."
+        ],
+        apply: () => ({
+            patch: {},
+            toast: { title: 'CRANES CLEARED', description: 'You heed Harrow and keep to the lighted gangways.' }
+        }),
+        relReward: { fear: 1 },
+        dismiss: (state) => ({
+            patch: {
+                player: { ...state.player, energy: Math.max(0, state.player.energy - 15), stats: { ...state.player.stats, worth: Math.max(0, state.player.stats.worth - 20) } }
+            },
+            toast: { title: 'PIER SHAKEDOWN', description: 'Harrows muscle catches you between containers. -15 Energy, -$20.' }
+        })
+    },
 
     // --- WARNINGS ---
     {

@@ -147,5 +147,27 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     {
         id: 'BAD_VIBES', name: 'Bad Vibes', weight: 20, cooldownBlocks: 4, maxPerDay: 1, contexts: ['any'],
         apply: (state) => { const loss = Math.floor(Math.random() * 5) + 2; return { patch: { player: { ...state.player, stats: { ...state.player.stats, will: Math.max(0, state.player.stats.will - loss) }, }, randomEvents: { ...state.randomEvents, lastOutcome: 'BAD_VIBES' } }, toast: { title: 'BAD VIBES', description: `Just not feeling it today. -${loss} Will.` } }; }
+    },
+    {
+        id: 'FOUNDRY_SCRAP_SURPLUS', name: 'Foundry Scrap Surplus', weight: 20, cooldownBlocks: 4, maxPerDay: 1,
+        contexts: ['work', 'travel', 'economy'], locations: ['foundry_row'],
+        apply: (state) => ({
+            patch: {
+                player: { ...state.player, stats: { ...state.player.stats, worth: state.player.stats.worth + 40 } },
+                randomEvents: { ...state.randomEvents, lastOutcome: 'FOUNDRY_SCRAP_SURPLUS' }
+            },
+            toast: { title: 'SURPLUS STAMP', description: 'Foundry Row presses ran hot today. You pick up $40 in stamped scrap dividend.' }
+        })
+    },
+    {
+        id: 'WATERFRONT_NIGHT_FOG', name: 'Waterfront Night Cargo', weight: 20, cooldownBlocks: 4, maxPerDay: 1,
+        contexts: ['travel', 'contract', 'social'], locations: ['the_waterfront'], timeRange: [1080, 1560],
+        apply: (state) => ({
+            patch: {
+                player: { ...state.player, stats: { ...state.player.stats, luck: state.player.stats.luck + 1 } },
+                randomEvents: { ...state.randomEvents, lastOutcome: 'WATERFRONT_NIGHT_FOG' }
+            },
+            toast: { title: 'HARBOR MIST', description: 'Dense fog shields the docks. Pier runners give you a free pass. +1 Luck.' }
+        })
     }
 ];

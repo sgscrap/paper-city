@@ -176,17 +176,31 @@ export const INTEL_SOURCES: IntelSource[] = [
         description: 'Cheap, fast, and frequently wrong.'
     },
     {
+        id: 'intel_needle_sheet',
+        name: 'Needle’s Foundry Ledger',
+        cost: 45,
+        accuracy: 65,
+        description: 'Machine parts, raw scrap trends, and quiet debt calls from Foundry Row.'
+    },
+    {
         id: 'intel_ticker_tess',
         name: 'Ticker Tess Tip',
         cost: 80,
-        accuracy: 70,
+        accuracy: 75,
         description: 'A floor trader with a good ear and a better filter.'
+    },
+    {
+        id: 'intel_condor_manifest',
+        name: 'Condor’s Harbor Manifest',
+        cost: 120,
+        accuracy: 80,
+        description: 'Early import bills, customs holds, and shipping volume off Pier 31.'
     },
     {
         id: 'intel_ghost_channel',
         name: 'Ghost Channel Brief',
         cost: 200,
-        accuracy: 85,
+        accuracy: 90,
         description: 'Information moved through the club sound system. Almost never wrong.'
     }
 ];
